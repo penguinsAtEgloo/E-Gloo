@@ -21,7 +21,7 @@ public class Member {
     @ColumnDescription("PK")
     private UUID id;
     
-    @ColumnDescription("유저 이름")
+    @ColumnDescription("유저 아이디")
     private String userId;
     
     @ColumnDescription("유저 이름")
