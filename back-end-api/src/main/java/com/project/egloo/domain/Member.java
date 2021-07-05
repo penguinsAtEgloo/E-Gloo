@@ -20,7 +20,10 @@ public class Member {
     @Column(columnDefinition = "BINARY(16)")
     @ColumnDescription("PK")
     private UUID id;
-
+    
+    @ColumnDescription("유저 이름")
+    private String userId;
+    
     @ColumnDescription("유저 이름")
     private String name;
 
