@@ -7,6 +7,7 @@ import org.hibernate.annotations.GenericGenerator;
 import javax.persistence.*;
 import java.util.UUID;
 
+@IdClass(MemberPK.class)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -20,8 +21,9 @@ public class Member {
     @Column(columnDefinition = "BINARY(16)")
     @ColumnDescription("PK")
     private UUID id;
-    
-    @ColumnDescription("유저 아이디")
+
+    @Id
+    @ColumnDescription("PK, 유저 아이디")
     private String userId;
     
     @ColumnDescription("유저 이름")
