@@ -5,9 +5,10 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
-@IdClass(MemberPK.class)
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
@@ -21,9 +22,10 @@ public class Member {
     @Column(columnDefinition = "BINARY(16)")
     @ColumnDescription("PK")
     private UUID id;
-
-    @Id
-    @ColumnDescription("PK, 유저 아이디")
+    
+    @Column(unique = true)
+    @NotNull@NotBlank
+    @ColumnDescription("유저 아이디")
     private String userId;
     
     @ColumnDescription("유저 이름")
