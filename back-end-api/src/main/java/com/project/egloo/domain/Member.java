@@ -5,6 +5,8 @@ import lombok.*;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import java.util.UUID;
 
 @Entity
@@ -21,6 +23,8 @@ public class Member {
     @ColumnDescription("PK")
     private UUID id;
     
+    @Column(unique = true)
+    @NotNull@NotBlank
     @ColumnDescription("유저 아이디")
     private String userId;
     
