@@ -1,16 +1,24 @@
 <template>
-  <div>
-    <section>
-      <h1>Profile Page</h1>
-      <span>Username</span>
-      <address>
-        <span>Address</span>
-      </address>
-    </section>
-  </div>
+  <section class="section">
+    <div class="container">
+      <h2 class="title">My Profile</h2>
+      <div class="content">
+        <p>
+          <strong>ID:</strong>
+          {{ loggedInUser.userId }}
+        </p>
+      </div>
+    </div>
+  </section>
 </template>
+
 <script>
+import { mapGetters } from 'vuex'
+
 export default {
-  layout: 'profile'
+  computed: {
+    ...mapGetters(['isAuthenticated', 'loggedInUser'])
+  }
 }
+
 </script>

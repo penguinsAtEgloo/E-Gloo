@@ -22,7 +22,7 @@ export default {
   },
 
   // Global CSS: https://go.nuxtjs.dev/config-css
-  css: ["@/assets/css/common.css",],
+  css: ["@/assets/css/common.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [],
@@ -37,25 +37,26 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     "@nuxtjs/axios",
-    "@nuxtjs/auth"
+    // "@nuxtjs/auth"
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {},
 
   axios: {
-    baseURL: "http://localhost:8080"
+    baseURL: "http://localhost:8080",
   },
 
-  auth: {
-    strategies: {
-      local: {
-        endpoints: {
-          login: { url: "login", method: "post", propertyName: "data.token" },
-          user: { url: "me", method: "get", propertyName: "data" },
-          logout: false
-        }
-      }
-    }
-  }
+
+  // auth: {
+  //   strategies: {
+  //     local: {
+  //       endpoints: {
+  //         login: { url: "member/login", method: "post", propertyName: "data.token" },
+  //         // user: { url: "me", method: "get", propertyName: "data" },
+  //         logout: false
+  //       }
+  //     }
+  //   }
+  // }
 };
