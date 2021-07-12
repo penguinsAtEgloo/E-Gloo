@@ -2,11 +2,14 @@ package com.project.egloo.domain;
 
 import com.project.egloo.common.ColumnDescription;
 import lombok.*;
+import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Pattern;
 import java.util.UUID;
 
 @Entity
@@ -14,6 +17,8 @@ import java.util.UUID;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Setter
+@Data
+@DynamicInsert
 public class Member {
 
     @Id
@@ -31,13 +36,18 @@ public class Member {
     @ColumnDescription("유저 이름")
     private String name;
 
+    @NotNull@NotBlank
+    @Length(min = 8, max = 20)
+    @Pattern(regexp = "^((?=.*[a-z0-9])(?=.*[A-Z]).{8,20})|((?=.*[a-z0-9])(?=.*[^a-zA-Z0-9가-힣]).{8,20})$")
     @ColumnDescription("비밀번호")
     private String password;
 
     @Enumerated(EnumType.STRING)
+    @Column(columnDefinition = "varchar(255) default 'LOCAL'")
     @ColumnDescription("유저 회원가입 경로")
     private Social social;
 
+    @NotNull@NotBlank
     @ColumnDescription("유저 휴대폰 번호")
     private String phoneNo;
 
