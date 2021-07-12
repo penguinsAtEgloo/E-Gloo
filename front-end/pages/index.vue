@@ -9,13 +9,13 @@
 
           <form method="post" @submit.prevent="login">
             <div class="field">
-              <label class="label">Username</label>
+              <label class="label">ID</label>
               <div class="control">
                 <input
-                  type="username"
+                  type="userId"
                   class="input"
-                  name="username"
-                  v-model="username"
+                  name="userId"
+                  v-model="userId"
                 />
               </div>
             </div>
@@ -49,31 +49,34 @@
 import Notification from '~/components/Notification'
 
 export default {
+  middleware: 'authenticated',
+
   components: {
     Notification,
   },
 
   data() {
     return {
-      username: '',
+      userId: '',
       password: '',
       error: null
     }
   },
 
   methods: {
-    async login() {
+    login() {
       try {
-        await this.$auth.loginWith('local', {
-          data: {
-          username: this.username,
+        //토큰던져주게되면 auth로 변경할것 TODO
+        // await this.$auth.loginWith('local', {
+        //   data: form
+        // })
+        // .then(() => this.$toast.success('Logged In!'));
+        this.$store.dispatch('login', {
+          userId: this.userId,
           password: this.password
-          }
-        })
-
-        this.$router.push('/')
+        }).then(() => this.$router.push('/profile'))
       } catch (e) {
-        this.error = e.response.data.message
+        this.error = e.message
       }
     }
   }
