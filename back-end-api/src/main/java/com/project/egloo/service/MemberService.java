@@ -27,8 +27,7 @@ public class MemberService {
         if (memberRespository.findByUserId(member.getUserId()) != null) {
             return new SignUpResponse(StatusCode.CLIENT_ERROR_CONFLICT).response("user already exist");
         }
-
-        System.out.println(member);
+        
         memberRespository.save(member);
         return new SignUpResponse(StatusCode.SUCCESS_OK).response("sign up success");
     }
