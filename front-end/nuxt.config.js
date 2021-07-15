@@ -25,7 +25,10 @@ export default {
   css: ["@/assets/css/common.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: [],
+  plugins: [
+    "~/plugins/vee-validate",
+    { src: "~/plugins/vs-modal", mode: "client" }
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -36,17 +39,22 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
-    "@nuxtjs/axios",
+    "@nuxtjs/axios"
     // "@nuxtjs/auth"
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
-  build: {},
-
-  axios: {
-    baseURL: "http://localhost:8080",
+  build: {
+    transpile: ["vee-validate/dist/rules"],
+    /*
+     ** You can extend webpack config here
+     */
+    extend(config, ctx) {}
   },
 
+  axios: {
+    baseURL: "http://localhost:8080"
+  }
 
   // auth: {
   //   strategies: {
