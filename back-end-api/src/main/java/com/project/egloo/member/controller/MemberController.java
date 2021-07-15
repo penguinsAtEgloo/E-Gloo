@@ -1,7 +1,7 @@
-package com.project.egloo.controller;
+package com.project.egloo.member.controller;
 
-import com.project.egloo.domain.Member;
-import com.project.egloo.service.MemberService;
+import com.project.egloo.member.domain.Member;
+import com.project.egloo.member.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;

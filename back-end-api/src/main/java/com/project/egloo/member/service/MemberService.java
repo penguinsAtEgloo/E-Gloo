@@ -1,9 +1,9 @@
-package com.project.egloo.service;
+package com.project.egloo.member.service;
 
 import com.project.egloo.common.StatusCode;
-import com.project.egloo.domain.Member;
-import com.project.egloo.dto.response.SignUpResponse;
-import com.project.egloo.repository.MemberRespository;
+import com.project.egloo.member.domain.Member;
+import com.project.egloo.member.dto.response.SignUpResponse;
+import com.project.egloo.member.repository.MemberRespository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;

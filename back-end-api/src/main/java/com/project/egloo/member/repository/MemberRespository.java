@@ -1,6 +1,6 @@
-package com.project.egloo.repository;
+package com.project.egloo.member.repository;
 
-import com.project.egloo.domain.Member;
+import com.project.egloo.member.domain.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
