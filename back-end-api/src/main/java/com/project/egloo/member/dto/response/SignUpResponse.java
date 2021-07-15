@@ -1,4 +1,4 @@
-package com.project.egloo.dto.response;
+package com.project.egloo.member.dto.response;
 
 import java.util.HashMap;
 
