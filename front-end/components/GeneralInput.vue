@@ -1,0 +1,54 @@
+<template>
+  <div class="field">
+    <ValidationProvider :rules="rules" v-slot="{ required }">
+      <label class="label" :for="name">
+        <span>{{ label || name }}</span>
+        <span>{{ required ? " *" : "" }}</span>
+      </label>
+      <input
+        :type="type"
+        :id="name"
+        class="input"
+        :name="name"
+        :placeholder="placeholder"
+        v-bind:value="value"
+        v-on:input="$emit('input', $event.target.value)"
+      />
+    </ValidationProvider>
+  </div>
+</template>
+
+<script>
+import { ValidationProvider } from "vee-validate";
+
+export default {
+  name: "GeneralInput",
+  components: {
+    ValidationProvider
+  },
+  props: {
+    type: {
+      default: "text"
+    },
+    id: {
+      default: ""
+    },
+    name: {
+      default: ""
+    },
+    label: {
+      default: ""
+    },
+    rules: {
+      type: [Object, String],
+      default: ""
+    },
+    placeholder: {
+      default: ""
+    },
+    value: {
+      default: ""
+    }
+  }
+};
+</script>
