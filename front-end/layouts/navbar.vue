@@ -3,6 +3,9 @@
     <main>
       <Nuxt />
     </main>
+    <nav>
+      <Navbar/>
+    </nav>
   </div>
 </template>
 <script></script>

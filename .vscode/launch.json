@@ -1,0 +1,14 @@
+{
+  "configurations": [
+    {
+      "type": "java",
+      "name": "Spring Boot-EglooApplication<egloo>",
+      "request": "launch",
+      "cwd": "${workspaceFolder}",
+      "console": "internalConsole",
+      "mainClass": "com.project.egloo.EglooApplication",
+      "projectName": "egloo",
+      "args": ""
+    }
+  ]
+}

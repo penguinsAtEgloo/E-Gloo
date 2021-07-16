@@ -5,7 +5,7 @@
       <div class="content">
         <p>
           <strong>ID:</strong>
-          {{ loggedInUser.userId }}
+          {{ loggedInUser }}
         </p>
       </div>
     </div>
