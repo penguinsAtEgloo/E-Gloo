@@ -1,56 +1,35 @@
 <template>
   <section class="section">
-    <div class="container">
+    <div class="container slide">
       <div class="columns">
         <div class="column is-4 is-offset-4">
           <h2 class="title has-text-centered">Welcome back!</h2>
 
           <Notification :message="error" v-if="error" />
-
-          <form method="post" @submit.prevent="login">
-            <div class="field">
-              <ValidationProvider rules="alpha_dash" v-slot="{ errors }">
-                <label class="label">ID</label>
-                <input
-                  name="userId"
-                  class="input"
-                  id="userId"
-                  v-model="userId"
-                  type="text"
-                  required
-                />
-              </ValidationProvider>
-            </div>
-            <div class="field">
-              <ValidationProvider rules="" v-slot="{ errors }">
-                <label class="label">비밀번호</label>
-                <input
-                  name="password"
-                  class="input"
-                  id="password"
-                  type="password"
-                  v-model="password"
-                  required
-                />
-              </ValidationProvider>
-            </div>
-            <div class="control">
-              <button type="submit" class="button is-dark is-fullwidth">
-                Log In
-              </button>
-            </div>
-          </form>
-          <div class="has-text-centered control" style="margin-top: 20px">
-            <div class="button" @click="openModal('modal-full')">회원가입</div>
-            <vs-modal
-              ref="modal-full"
-              remove-close-button
-              removeHeader
-              size="fullscreen"
-            >
-              <div class="button" @click="closeModal('modal-full')">X</div>
-              <register></register>
-            </vs-modal>
+          <ValidationObserver>
+            <form method="post" @submit.prevent="login">
+              <general-input
+                name="userId"
+                v-model="userId"
+                placeholder="아이디 입력"
+                label="ID"
+              />
+              <general-input
+                name="password"
+                type="password"
+                v-model="password"
+                placeholder="비밀번호 입력"
+                label="비밀번호"
+              />
+              <div class="control">
+                <button type="submit" class="button is-dark is-fullwidth">
+                  입력완료
+                </button>
+              </div>
+            </form>
+          </ValidationObserver>
+          <div class="control" style="margin-top: 20px">
+            <register-modal></register-modal>
           </div>
         </div>
       </div>
@@ -60,12 +39,14 @@
 
 <script>
 import Notification from "~/components/Notification";
-import { ValidationProvider } from "vee-validate";
+import { ValidationObserver } from "vee-validate";
+import GeneralInput from "~/components/GeneralInput";
 
 export default {
   components: {
     Notification,
-    ValidationProvider
+    ValidationObserver,
+    GeneralInput
   },
 
   data() {
@@ -88,7 +69,6 @@ export default {
           userId: this.userId,
           password: this.password
         })
-        .then(() => this.$router.push("/profile"))
         .catch(e => (this.error = e.message));
     }
   }
