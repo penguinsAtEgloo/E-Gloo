@@ -126,8 +126,8 @@ export default {
       };
 
       this.$store.dispatch("register", data).catch(e => {
-        if (e.response) this.error = e.response.data.message;
-        else this.error = e.message;
+        if (e.response) alert(e.response.data.message);
+        else alert(e.message);
       });
 
       // this.$store.dispatch('login', {
@@ -146,7 +146,7 @@ export default {
       if (this.password != this.passwordCheck) {
         errorNum++;
         //TODO 비밀번호 일치오류 보여주는 부분
-        throw new Error("비밀번호 불일치");
+        alert("비밀번호가 불일치합니다.");
       }
 
       //추가 유효성 체크 부분

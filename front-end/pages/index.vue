@@ -1,10 +1,11 @@
 <template>
-  <section class="section">
+  <div>
+    <nuxt-link to="/recipes">Button</nuxt-link>
     <div class="container has-text-centered">
       <login v-if="!isAuthenticated"></login>
       <profile v-else></profile>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>

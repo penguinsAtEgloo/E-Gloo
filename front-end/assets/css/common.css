@@ -1,3 +1,10 @@
+@import url("https://fonts.googleapis.com/css?family=Noto+Sans+KR");
+
+html,
+body {
+  font-family: "Noto Sans KR", sans-serif;
+}
+
 input[type="radio"] {
   display: none;
   margin: 1em;
