@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.util.HashMap;
 
+@CrossOrigin(origins = "http://localhost:3000")
 @RestController
 @RequestMapping("/auth")
 public class MemberController {
@@ -17,7 +18,7 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("/login")
-    public HashMap memberLogin(String userId, String password)  {
+    public HashMap memberLogin(String userId, String password) {
         return memberService.memberLoginService(userId, password);
     }
 
