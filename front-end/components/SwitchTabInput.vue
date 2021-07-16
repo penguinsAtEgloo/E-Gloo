@@ -53,6 +53,9 @@ export default {
     chekedValue: {
       get() {
         return this.value;
+      },
+      set(newValue) {
+        return newValue;
       }
     }
   },

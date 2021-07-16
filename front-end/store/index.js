@@ -9,6 +9,7 @@ export const mutations = {
   LOGIN(state, userId) {
     state.loggedIn = true;
     state.userId = userId;
+    this.$router.push("/");
   },
   LOGOUT(state) {
     state.loggedIn = false;
@@ -28,43 +29,34 @@ export const getters = {
 
 export const actions = {
   async login({ commit }, { userId, password }) {
-    let form = new FormData();
-    form.append("userId", userId);
-    form.append("password", password);
+    let formData = new FormData();
+    formData.append("userId", userId);
+    formData.append("password", password);
 
-    await axios
-      .post("http://localhost:8080/member/login", form)
-      .then(res => {
-        if (res.data.code != 200) {
-          throw new Error(
-            "로그인에 실패했습니다. 아이디와 비밀번호를 확인 해 주세요."
-          );
-        }
-      })
-      .then(commit("LOGIN", userId));
+    axios.post("http://localhost:8080/auth/login", formData).then(res => {
+      if (res.data.code != 200) {
+        throw new Error(
+          "로그인에 실패했습니다. 아이디와 비밀번호를 확인 해 주세요."
+        );
+      } else {
+        commit("LOGIN", userId);
+      }
+    });
   },
 
-  async register(
-    { commit },
-    { name, userId, password, social, phoneNo, gender, email, address }
-  ) {
-    let form = new FormData();
-    form.append("userId", name);
-    form.append("userId", userId);
-    form.append("password", password);
-    form.append("social", social);
-    form.append("phoneNo", phoneNo);
-    form.append("gender", gender);
-    form.append("email", email);
-    form.append("address", address);
-
+  async register({ commit }, data) {
+    let formData = new FormData();
+    for (var key in data) {
+      formData.append(key, data[key]);
+    }
     await axios
-      .post("http://localhost:8080/member/signUp", form)
+      .post("http://localhost:8080/auth/signup", formData)
       .then(res => {
         if (res.data.code != 200) {
           throw new Error("회원가입에 실패했습니다.");
+        } else {
+          commit("LOGIN", data["userId"]);
         }
-      })
-      .then(commit("LOGIN", userId));
+      });
   }
 };

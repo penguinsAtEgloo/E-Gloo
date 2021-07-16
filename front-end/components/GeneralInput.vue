@@ -13,6 +13,7 @@
         :placeholder="placeholder"
         v-bind:value="value"
         v-on:input="$emit('input', $event.target.value)"
+        :required="required"
       />
     </ValidationProvider>
   </div>
@@ -52,3 +53,8 @@ export default {
   }
 };
 </script>
+<style scoped>
+.label {
+  text-align: left;
+}
+</style>

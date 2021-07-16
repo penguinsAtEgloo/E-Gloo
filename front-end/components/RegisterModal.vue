@@ -1,11 +1,17 @@
 <template>
-  <div class="container slide">
-    <div class="columns">
-      <div class="column is-4 is-offset-4">
+  <div class="columns">
+    <div class="column is-4 is-offset-4">
+      <div class="button" @click="openModal('modal-full')">회원가입</div>
+      <vs-modal
+        ref="modal-full"
+        remove-close-button
+        removeHeader
+        size="fullscreen"
+        style="display:none"
+      >
+        <div class="button" @click="closeModal('modal-full')">X</div>
         <h2 class="title has-text-centered">회원가입</h2>
-
         <Notification :message="error" v-if="error" />
-
         <ValidationObserver>
           <form method="post" @submit.prevent="register">
             <general-input
@@ -66,7 +72,7 @@
             </div>
           </form>
         </ValidationObserver>
-      </div>
+      </vs-modal>
     </div>
   </div>
 </template>
@@ -106,28 +112,28 @@ export default {
 
   methods: {
     register() {
-      try {
-        this.validateValues();
+      this.validateValues();
 
-        this.$store.dispatch("register", {
-          name: this.name,
-          userId: this.userId,
-          phoneNo: this.phoneNo,
-          password: this.password,
-          social: this.social,
-          gender: this.gender,
-          email: this.email,
-          address: this.address
-        });
+      var data = {
+        userId: this.userId,
+        name: this.name,
+        phoneNo: this.phoneNo,
+        password: this.password,
+        social: this.social,
+        gender: this.gender,
+        email: this.email,
+        address: this.address
+      };
 
-        // this.$store.dispatch('login', {
-        //   userId: this.userId,
-        //   password: this.password
-        // }).then(() => this.$router.push('/profile'))
-      } catch (e) {
+      this.$store.dispatch("register", data).catch(e => {
         if (e.response) this.error = e.response.data.message;
         else this.error = e.message;
-      }
+      });
+
+      // this.$store.dispatch('login', {
+      //   userId: this.userId,
+      //   password: this.password
+      // }).then(() => this.$router.push('/profile'))
     },
 
     validateValues() {
@@ -145,21 +151,17 @@ export default {
 
       //추가 유효성 체크 부분
 
-      if (error > 0) return false;
+      if (errorNum > 0) return false;
 
       return true;
+    },
+    openModal(ref) {
+      this.$refs[ref].open();
+    },
+
+    closeModal(ref) {
+      this.$refs[ref].close();
     }
   }
 };
 </script>
-
-<style scoped>
-div + p {
-  color: red;
-}
-
-input[type="radio"] {
-  display: none;
-  margin: 1em;
-}
-</style>
