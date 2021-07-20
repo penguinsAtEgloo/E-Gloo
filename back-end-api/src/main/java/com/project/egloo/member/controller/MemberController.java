@@ -17,7 +17,7 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("/login")
-    public HashMap memberLogin(String userId, String password)  {
+    public HashMap memberLogin(String userId, String password) {
         return memberService.memberLoginService(userId, password);
     }
 

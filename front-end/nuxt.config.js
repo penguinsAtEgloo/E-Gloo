@@ -39,8 +39,9 @@ export default {
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
     // https://go.nuxtjs.dev/bootstrap
-    "@nuxtjs/axios"
-    // "@nuxtjs/auth"
+    "@nuxtjs/axios",
+    // "@nuxtjs/auth",
+    "@nuxtjs/svg"
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

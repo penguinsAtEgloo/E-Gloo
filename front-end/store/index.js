@@ -1,62 +1,24 @@
-import axios from "axios";
+const recipes = [];
+for (let i = 1; i <= 23; i++) {
+  recipes.push({
+    recipeName: "요리 넘버 " + i,
+    recipeId: i,
+    bookmarked: Math.random() >= 0.5,
+    imageUrl: "",
+    duration: Math.floor(Math.random() * 60) + "분",
+    difficulty: i + "급"
+  });
+}
+
+recipes[0].imageUrl =
+  "https://recipe1.ezmember.co.kr/cache/recipe/2021/01/03/ff04026cccdfaf4a6781f3f6a3e76fa21.jpg";
+recipes[0].bookmarked = true;
+recipes[1].imageUrl =
+  "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSYVZCxIDN1Q05Z2iN9yvhJLcAFR3EdbFyeug&usqp=CAU";
+recipes[1].bookmarked = false;
 
 export const state = () => ({
   loggedIn: false,
-  userId: null
+  userId: null,
+  recipes: recipes
 });
-
-export const mutations = {
-  LOGIN(state, userId) {
-    state.loggedIn = true;
-    state.userId = userId;
-    this.$router.push("/");
-  },
-  LOGOUT(state) {
-    state.loggedIn = false;
-    state.userId = null;
-    this.$router.push("/");
-  }
-};
-
-export const getters = {
-  isAuthenticated(state) {
-    return state.loggedIn;
-  },
-  loggedInUser(state) {
-    return state.userId;
-  }
-};
-
-export const actions = {
-  async login({ commit }, { userId, password }) {
-    let formData = new FormData();
-    formData.append("userId", userId);
-    formData.append("password", password);
-
-    axios.post("http://localhost:8080/auth/login", formData).then(res => {
-      if (res.data.code != 200) {
-        throw new Error(
-          "로그인에 실패했습니다. 아이디와 비밀번호를 확인 해 주세요."
-        );
-      } else {
-        commit("LOGIN", userId);
-      }
-    });
-  },
-
-  async register({ commit }, data) {
-    let formData = new FormData();
-    for (var key in data) {
-      formData.append(key, data[key]);
-    }
-    await axios
-      .post("http://localhost:8080/auth/signup", formData)
-      .then(res => {
-        if (res.data.code != 200) {
-          throw new Error("회원가입에 실패했습니다.");
-        } else {
-          commit("LOGIN", data["userId"]);
-        }
-      });
-  }
-};

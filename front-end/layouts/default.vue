@@ -8,7 +8,6 @@
 <script></script>
 export default {
   components: {
-    Navbar
   }
 }
 </script>
