@@ -11,4 +11,7 @@ public class StatusCode {
     public static final int CLIENT_ERROR_REQUEST_TIMEOUT  =   408;
     public static final int CLIENT_ERROR_CONFLICT  =   409;
 
+    public static final int SERVER_INTERNAL_ERROR  =   500;
+
+
 }
