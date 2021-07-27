@@ -7,7 +7,6 @@
       </label>
       <input
         :type="type"
-        :id="name"
         class="input"
         :name="name"
         :placeholder="placeholder"
@@ -30,9 +29,6 @@ export default {
   props: {
     type: {
       default: "text"
-    },
-    id: {
-      default: ""
     },
     name: {
       default: ""

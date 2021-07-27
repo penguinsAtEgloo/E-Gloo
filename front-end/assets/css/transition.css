@@ -1,0 +1,22 @@
+.slideDown-enter-active {
+  animation: slide-up-in 0.3s;
+}
+.slideDown-leave-active {
+  animation: slide-up-out 0.3s;
+}
+@keyframes slide-up-in {
+  0% {
+    transform: translateY(200vw);
+  }
+  100% {
+    transform: translateY(100vw);
+  }
+}
+@keyframes slide-up-out {
+  0% {
+    transform: translateY(0);
+  }
+  100% {
+    transform: translateY(100vw);
+  }
+}

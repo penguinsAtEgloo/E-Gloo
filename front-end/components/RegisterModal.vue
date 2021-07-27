@@ -1,16 +1,11 @@
 <template>
-  <div class="columns">
-    <div class="column is-4 is-offset-4">
-      <div class="button" @click="openModal('modal-full')">회원가입</div>
-      <vs-modal
-        ref="modal-full"
-        remove-close-button
-        removeHeader
-        size="fullscreen"
-        style="display:none"
-      >
-        <div class="button" @click="closeModal('modal-full')">X</div>
-        <h2 class="title has-text-centered">회원가입</h2>
+  <div class="modal-wrapper">
+    <div class="modal-container">
+      <div class="modal-body">
+        <div class="modal-header">
+          <multiply-icon @click="$emit('close')" />
+          <span class="title">회원가입</span>
+        </div>
         <Notification :message="error" v-if="error" />
         <ValidationObserver>
           <form method="post" @submit.prevent="register">
@@ -72,7 +67,7 @@
             </div>
           </form>
         </ValidationObserver>
-      </vs-modal>
+      </div>
     </div>
   </div>
 </template>
@@ -82,15 +77,16 @@ import Notification from "~/components/Notification";
 import { ValidationObserver } from "vee-validate";
 import GeneralInput from "~/components/GeneralInput";
 import SwitchTabInput from "~/components/SwitchTabInput";
+import MultiplyIcon from "~/assets/images/multiply.svg?inline";
 
 export default {
   components: {
     Notification,
     ValidationObserver,
     GeneralInput,
-    SwitchTabInput
+    SwitchTabInput,
+    MultiplyIcon
   },
-
   data() {
     return {
       name: "",
@@ -154,14 +150,46 @@ export default {
       if (errorNum > 0) return false;
 
       return true;
-    },
-    openModal(ref) {
-      this.$refs[ref].open();
-    },
-
-    closeModal(ref) {
-      this.$refs[ref].close();
     }
   }
 };
 </script>
+<style scoped>
+.modal-wrapper {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: -webkit-fill-available;
+  height: -webkit-fill-available;
+  overflow: hidden;
+}
+
+.modal-container {
+  margin: 0;
+  height: 100%;
+  width: 100%;
+  padding: 0 2rem;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.33);
+  transition: all 0.3s ease;
+  overflow: scroll;
+}
+.modal-header {
+  display: flex;
+  margin-top: 1em;
+  margin-bottom: 2em;
+  color: black;
+  font-style: normal;
+  font-weight: 900;
+  line-height: 35px;
+  align-items: center;
+}
+.modal-body {
+  margin: 20px 0;
+}
+.title {
+  margin-left: 1rem;
+}
+</style>

@@ -11,8 +11,8 @@
             @click="bind($event.target.value)"
             v-model="chekedValue"
             type="radio"
-            :key="item.id"
             :id="item.id"
+            :key="item.id"
             :name="category"
             :value="item.id"
           />
@@ -66,4 +66,8 @@ export default {
   }
 };
 </script>
-<style scoped></style>
+<style scoped>
+.label {
+  text-align: left;
+}
+</style>
