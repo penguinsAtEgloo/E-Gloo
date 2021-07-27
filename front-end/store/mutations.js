@@ -9,6 +9,6 @@ export const LOGOUT = state => {
   this.$router.push("/");
 };
 
-export const bookmark = (state, recipe) => {
-  recipe.bookmarked = !recipe.bookmarked;
+export const bookmark = (state, object) => {
+  object.bookmarked = !object.bookmarked;
 };

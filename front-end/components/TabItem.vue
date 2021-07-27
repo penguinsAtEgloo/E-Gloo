@@ -1,8 +1,8 @@
 <template>
-  <div class="container">
-    <button @click="$emit('input', id)" :class="[active, 'tab']">
-      {{ label }}
-    </button>
+  <div class="container" :style="cssVars">
+    <div @click="$emit('input', id)" :class="[active, 'tab']">
+      <span>{{ labelLonger }}</span>
+    </div>
   </div>
 </template>
 
@@ -11,11 +11,27 @@ export default {
   props: {
     id: Number,
     label: String,
-    value: Number
+    value: Number,
+    activeColor: String,
+    fontColor: String
   },
   computed: {
     active() {
       return this.value === this.id ? "active" : false;
+    },
+    cssVars() {
+      return {
+        "--border-style": this.activeColor ? "none" : "solid",
+        "--border-bottom-color": this.activeColor ? "none" : "#2F80ED",
+        "--active-color": this.activeColor ? this.activeColor : "transparent",
+        "--font-color": this.fontColor ? this.fontColor : "black",
+        "--width": this.fontColor ? "100%" : "fit-content"
+      };
+    },
+    labelLonger() {
+      return this.fontColor
+        ? this.label
+        : "\xa0\xa0\xa0" + this.label + "\xa0\xa0\xa0";
     }
   }
 };
@@ -24,25 +40,28 @@ export default {
 <style scoped>
 .container {
   display: flex;
-  width: 100%;
-  height: 40px;
+  width: var(--width);
+  text-align: center;
 }
 .tab {
+  display: flex;
   color: black;
-  background: white;
+  background: transparent;
   border-color: transparent;
-  display: block;
+  font-size: 0.75rem;
   width: 100%;
-  font-size: 12px;
-  line-height: 17.38px;
+  line-height: 2rem;
+  justify-content: center;
 }
-
-.tabs:nth-child(1) {
-  border-radius: 5vmin;
-}
-
 .active {
-  background: linear-gradient(0deg, #0063f7, #0063f7);
-  color: white;
+  background: var(--active-color);
+  color: var(--font-color);
+  border-bottom-style: var(--border-style);
+  border-bottom-color: var(--border-bottom-color);
+  border-width: 0.13rem;
+}
+span {
+  display: inline-flex;
+  align-items: center;
 }
 </style>
