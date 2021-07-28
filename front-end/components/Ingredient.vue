@@ -2,13 +2,13 @@
   <div class="outer" :style="cssVars">
     <div class="wrap-image">
       <div
-        :class="{ ing_circle: true, bookmarked: item.bookmarked }"
+        :class="{ ing_circle: true, bookmarked: ingredient.bookmarked }"
         role="img"
         aria-label="alt"
-        @click="bookmark(item)"
+        @click="bookmark(ingredient)"
       />
     </div>
-    <div class="ing_text">{{ item.name }}</div>
+    <div class="ing_text">{{ ingredient.name }}</div>
   </div>
 </template>
 <script>
@@ -16,7 +16,7 @@ import { mapMutations } from "vuex";
 
 export default {
   props: {
-    item: {
+    ingredient: {
       type: Object,
       default: () => {
         return {};
@@ -27,9 +27,9 @@ export default {
     cssVars() {
       return {
         "--image-url":
-          this.item.imageUrl == ""
+          this.ingredient.imageUrl == ""
             ? "#e0e0e0"
-            : "url(" + this.item.imageUrl + ")"
+            : "url(" + this.ingredient.imageUrl + ")"
       };
     }
   },
