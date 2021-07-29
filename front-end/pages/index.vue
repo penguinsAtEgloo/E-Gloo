@@ -2,10 +2,8 @@
   <div>
     <nuxt-link to="/recipes">Button</nuxt-link>
     <nuxt-link to="/ingredients">Button2</nuxt-link>
-    <div class="container has-text-centered">
-      <login v-if="!isAuthenticated"></login>
-      <profile v-else></profile>
-    </div>
+    <login v-if="!isAuthenticated"></login>
+    <profile v-else></profile>
   </div>
 </template>
 

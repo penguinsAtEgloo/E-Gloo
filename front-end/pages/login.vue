@@ -1,40 +1,38 @@
 <template>
-  <section class="section">
-    <div class="container slide">
-      <div class="columns">
-        <div class="column is-4 is-offset-4">
-          <h2 class="title has-text-centered">Welcome back!</h2>
-
-          <Notification :message="error" v-if="error" />
-          <ValidationObserver>
-            <form method="post" @submit.prevent="login">
-              <general-input
-                name="userId"
-                v-model="userId"
-                placeholder="아이디 입력"
-                label="ID"
-              />
-              <general-input
-                name="password"
-                type="password"
-                v-model="password"
-                placeholder="비밀번호 입력"
-                label="비밀번호"
-              />
-              <div class="control">
-                <button type="submit" class="button is-dark is-fullwidth">
-                  입력완료
-                </button>
-              </div>
-            </form>
-          </ValidationObserver>
-          <div class="control" style="margin-top: 20px">
-            <register-modal></register-modal>
+  <div>
+    <transition name="slideDown">
+      <register-modal v-if="showModal" @close="showModal = false" />
+    </transition>
+    <div class="section has-text-centered">
+      <h2 class="title">로그인</h2>
+      <Notification :message="error" v-if="error" />
+      <ValidationObserver>
+        <form method="post" @submit.prevent="login">
+          <general-input
+            name="userId"
+            v-model="userId"
+            placeholder="아이디 입력"
+            label="ID"
+          />
+          <general-input
+            name="password"
+            type="password"
+            v-model="password"
+            placeholder="비밀번호 입력"
+            label="비밀번호"
+          />
+          <div class="control">
+            <button type="submit" class="button is-dark is-fullwidth">
+              입력완료
+            </button>
           </div>
-        </div>
+        </form>
+      </ValidationObserver>
+      <div class="button" @click="showModal = true" style="margin-top:20px">
+        회원가입
       </div>
     </div>
-  </section>
+  </div>
 </template>
 
 <script>
@@ -53,7 +51,8 @@ export default {
     return {
       userId: "",
       password: "",
-      error: null
+      error: null,
+      showModal: false
     };
   },
 
