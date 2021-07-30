@@ -3,18 +3,19 @@ package com.project.egloo.member.service;
 import com.project.egloo.common.StatusCode;
 import com.project.egloo.member.domain.Member;
 import com.project.egloo.member.dto.response.SignUpResponse;
-import com.project.egloo.member.repository.MemberRespository;
+import com.project.egloo.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
 import java.util.HashMap;
+import java.util.Optional;
 
 @Service
 public class MemberService {
 
     @Autowired
-    MemberRespository memberRespository;
+    MemberRepository memberRespository;
 
     public HashMap memberSignUP(Member member, Errors errors) {
         if (errors.hasErrors()) {
@@ -34,7 +35,7 @@ public class MemberService {
 
 
     public HashMap memberLoginService(String userId, String password) {
-        Member member = memberRespository.findByUserIdAndPassword(userId, password);
+        Optional<Member> member = memberRespository.findByUserIdAndPassword(userId, password);
         if (member == null ) {
             return new SignUpResponse(StatusCode.CLIENT_ERROR_NOT_FOUND).response("user ID or password not found");
         }
