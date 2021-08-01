@@ -1,6 +1,9 @@
-package com.project.egloo.member.domain;
+package com.project.egloo.ingredient.domain;
 
 import com.project.egloo.common.ColumnDescription;
+import com.project.egloo.recipe.domain.Category;
+import com.project.egloo.recipe.domain.Recipe;
+import com.project.egloo.recipe.domain.Unit;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 

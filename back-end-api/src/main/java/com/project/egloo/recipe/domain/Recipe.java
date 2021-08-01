@@ -1,6 +1,8 @@
-package com.project.egloo.member.domain;
+package com.project.egloo.recipe.domain;
 
 import com.project.egloo.common.ColumnDescription;
+import com.project.egloo.recipe.domain.Category;
+import com.project.egloo.recipe.domain.Difficulty;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
@@ -33,7 +35,7 @@ public class Recipe {
     @Enumerated(EnumType.STRING)
     @Column(columnDefinition = "varchar(255) default 'MIDDLE'")
     @ColumnDescription("레시피 난이도")
-    private Difficulty  difficulty;
+    private Difficulty difficulty;
 
     @ColumnDescription("별점")
     private Double  ratings;
