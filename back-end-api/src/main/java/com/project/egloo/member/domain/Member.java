@@ -60,4 +60,12 @@ public class Member {
 
     @ColumnDescription("주소")
     private String address;
+
+    @ColumnDescription("유저 Role")
+    private MemberRole role;
+
+    public String roleName(){
+        return role.name();
+    }
+
 }
