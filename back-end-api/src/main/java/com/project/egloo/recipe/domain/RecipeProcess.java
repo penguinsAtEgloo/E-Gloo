@@ -1,4 +1,4 @@
-package com.project.egloo.member.domain;
+package com.project.egloo.recipe.domain;
 
 import com.project.egloo.common.ColumnDescription;
 import lombok.*;

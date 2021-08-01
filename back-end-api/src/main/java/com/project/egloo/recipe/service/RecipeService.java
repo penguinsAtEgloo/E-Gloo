@@ -1,8 +1,7 @@
-package com.project.egloo.member.service;
+package com.project.egloo.recipe.service;
 
-import com.project.egloo.common.StatusCode;
-import com.project.egloo.member.domain.IngredientRecipeMapping;
-import com.project.egloo.member.repository.IngredientRecipeMappingRepository;
+import com.project.egloo.ingredient.domain.IngredientRecipeMapping;
+import com.project.egloo.ingredient.repository.IngredientRecipeMappingRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -41,7 +40,7 @@ public class RecipeService {
 
     public HashMap response(Object object){
         HashMap res = new HashMap();
-        res.put("code", StatusCode.SUCCESS_OK);
+        res.put("code", "200");
         res.put("msg",object);
         res.put("errors","");
         return res;

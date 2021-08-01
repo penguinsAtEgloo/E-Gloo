@@ -1,5 +1,6 @@
-package com.project.egloo.member.domain;
+package com.project.egloo.ingredient.domain;
 
+import com.project.egloo.recipe.domain.Recipe;
 import lombok.Data;
 import lombok.Getter;
 
