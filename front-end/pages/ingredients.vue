@@ -30,12 +30,12 @@
 </template>
 <script>
 import TabItem from "~/components/TabItem";
-import Ingredient from "~/components/Ingredient";
+import ingredient from "~/components/Ingredient";
 import Grid from "~/components/Grid";
 import { mapState } from "vuex";
 
 export default {
-  components: { TabItem, Ingredient, Grid },
+  components: { TabItem, ingredient, Grid },
   data() {
     return {
       list: [
@@ -46,7 +46,7 @@ export default {
         { id: 5, label: "우유/유제품", content: "item5" }
       ],
       currentId: 1,
-      ingredient: Ingredient
+      ingredient
     };
   },
   computed: {
