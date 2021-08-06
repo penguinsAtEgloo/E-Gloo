@@ -37,6 +37,8 @@ dependencies {
     implementation group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.11.RELEASE'
     implementation group: 'io.jsonwebtoken', name: 'jjwt', version: '0.9.1'
 
+    //Redis
+    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '2.5.3'
 
     // DB
     implementation group: 'mysql', name: 'mysql-connector-java', version: '8.0.22'
