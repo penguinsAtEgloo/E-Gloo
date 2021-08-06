@@ -1,5 +1,6 @@
 package com.project.egloo.ingredient.domain;
 
+import com.project.egloo.common.ColumnDescription;
 import com.project.egloo.recipe.domain.Unit;
 import lombok.*;
 
@@ -15,21 +16,18 @@ import java.util.UUID;
 public class UserIngredient {
 
     @Id
+    @ColumnDescription("PK")
     private UUID userId;
 
-
-    @ManyToOne(fetch = FetchType.LAZY, optional = true)
-    @JoinColumns( value = {
-            @JoinColumn(name = "ingredient_id", updatable = false, insertable = false),
-            @JoinColumn(name = "ingredient_name", updatable = false, insertable = false)
-    })
+    @ManyToOne
+    @ColumnDescription("재료 ID")
     private Ingredient ingredient;
 
-    private String name;
-
+    @ColumnDescription("수량")
     private int quantitiy;
 
     @Enumerated(EnumType.STRING)
+    @ColumnDescription("단위")
     private Unit unit;
 
 }

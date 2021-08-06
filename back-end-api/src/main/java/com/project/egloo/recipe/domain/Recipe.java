@@ -1,16 +1,11 @@
 package com.project.egloo.recipe.domain;
 
 import com.project.egloo.common.ColumnDescription;
-import com.project.egloo.ingredient.domain.Ingredient;
-import com.project.egloo.recipe.domain.Category;
-import com.project.egloo.recipe.domain.Difficulty;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 
 import javax.persistence.*;
 import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
 
 @Entity
 @AllArgsConstructor
@@ -28,10 +23,6 @@ public class Recipe {
     @ManyToOne
     @ColumnDescription("FK 카테고리 아이디")
     private Category category;
-
-    @OneToMany
-    @ColumnDescription("재료 정보")
-    private Set<Ingredient> ingredients = new HashSet<>();
 
     @ColumnDescription("간략정보")
     private String  summary;

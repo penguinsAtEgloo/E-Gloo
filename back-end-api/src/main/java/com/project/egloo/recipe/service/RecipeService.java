@@ -1,8 +1,5 @@
 package com.project.egloo.recipe.service;
 
-import com.project.egloo.ingredient.domain.IngredientRecipeMapping;
-import com.project.egloo.ingredient.repository.IngredientRecipeMappingRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -10,21 +7,20 @@ import java.util.*;
 @Service
 public class RecipeService {
 
-    @Autowired
-    private IngredientRecipeMappingRepository ingredientRecipeMappingRepository;
-
+//    추후 검색어 개발할때 수중할 예정
     public HashMap getRecipeByIngredients(ArrayList lis) {
-        ArrayList intersection = new ArrayList();
-        for(int i=0; i < lis.size(); i++){
-            List mappingList =  ingredientRecipeMappingRepository.findByIngredient_id(Long.parseLong((String) lis.get(i)));
-            List recipeNames = new ArrayList();
-            for(int j=0; j < mappingList.size(); j++){
-                IngredientRecipeMapping map = (IngredientRecipeMapping) mappingList.get(j);
-                recipeNames.add(map.getRecipe().getName());
-            }
-            intersection.add(recipeNames);
-        }
-        return  response(intersection(intersection));
+//        ArrayList intersection = new ArrayList();
+//        for(int i=0; i < lis.size(); i++){
+//            List mappingList =  ingredientRecipeMappingRepository.findByIngredient_id(Long.parseLong((String) lis.get(i)));
+//            List recipeNames = new ArrayList();
+//            for(int j=0; j < mappingList.size(); j++){
+//                IngredientRecipeMapping map = (IngredientRecipeMapping) mappingList.get(j);
+//                recipeNames.add(map.getRecipe().getName());
+//            }
+//            intersection.add(recipeNames);
+//        }
+//        return  response(intersection(intersection));
+        return null;
     }
 
     public HashSet intersection(ArrayList inputArrays)
