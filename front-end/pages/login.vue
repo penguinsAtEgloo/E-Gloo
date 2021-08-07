@@ -6,20 +6,22 @@
     <div class="section has-text-centered">
       <h2 class="title">로그인</h2>
       <Notification :message="error" v-if="error" />
-      <ValidationObserver>
+      <ValidationObserver ref="observer" class="has-text-left">
         <form method="post" @submit.prevent="login">
           <general-input
             name="userId"
-            v-model="userId"
+            v-model="loginData.userId"
             placeholder="아이디 입력"
             label="ID"
+            rules="required"
           />
           <general-input
             name="password"
             type="password"
-            v-model="password"
+            v-model="loginData.password"
             placeholder="비밀번호 입력"
             label="비밀번호"
+            rules="required"
           />
           <div class="control">
             <button type="submit" class="button is-dark is-fullwidth">
@@ -28,7 +30,12 @@
           </div>
         </form>
       </ValidationObserver>
-      <div class="button" @click="showModal = true" style="margin-top:20px">
+      <div
+        class="button"
+        id="btn-open-register"
+        @click="showModal = true"
+        style="margin-top:20px"
+      >
         회원가입
       </div>
     </div>
@@ -39,36 +46,35 @@
 import Notification from "~/components/Notification";
 import { ValidationObserver } from "vee-validate";
 import GeneralInput from "~/components/GeneralInput";
+import RegisterModal from "@/components/RegisterModal";
 
 export default {
   components: {
     Notification,
     ValidationObserver,
-    GeneralInput
+    GeneralInput,
+    RegisterModal
   },
 
   data() {
     return {
-      userId: "",
-      password: "",
+      loginData: {
+        userId: "",
+        password: ""
+      },
       error: null,
       showModal: false
     };
   },
 
   methods: {
-    login() {
-      //토큰던져주게되면 auth로 변경할것 TODO
-      // await this.$auth.loginWith('local', {
-      //   data: form
-      // })
-      // .then(() => this.$toast.success('Logged In!'));
-      this.$store
-        .dispatch("login", {
-          userId: this.userId,
-          password: this.password
-        })
-        .catch(e => (this.error = e.message));
+    async login() {
+      const isValid = await this.$refs.observer.validate();
+      if (isValid) {
+        this.$store
+          .dispatch("login", { data: this.loginData })
+          .catch(e => (this.error = e.message));
+      }
     }
   }
 };

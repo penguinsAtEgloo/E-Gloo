@@ -1,7 +1,7 @@
 export const isAuthenticated = state => {
-  return state.loggedIn;
+  return state.auth.loggedIn;
 };
 
 export const loggedInUser = state => {
-  return state.userId;
+  return state.auth.user;
 };

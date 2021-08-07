@@ -13,6 +13,9 @@ import Login from "./login";
 import { mapGetters } from "vuex";
 
 export default {
+  created() {
+    this.$logging.log("index created!");
+  },
   components: {
     Login,
     Profile

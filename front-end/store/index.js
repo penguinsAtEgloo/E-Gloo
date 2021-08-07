@@ -31,8 +31,6 @@ ingredients[0].imageUrl =
   "https://images-na.ssl-images-amazon.com/images/I/71S6oQqVa5L._SL1500_.jpg";
 
 export const state = () => ({
-  loggedIn: false,
-  userId: null,
   recipes: recipes,
   ingredients: ingredients
 });

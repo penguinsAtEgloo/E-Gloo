@@ -25,7 +25,11 @@ export default {
   css: ["@/assets/css/common.css", "@/assets/css/transition.css"],
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
-  plugins: ["~/plugins/vee-validate"],
+  plugins: [
+    { src: "~/plugins/vee-validate", mode: "client" },
+    { src: "~/plugins/axios", mode: "client" },
+    { src: "~/plugins/services" }
+  ],
 
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -37,32 +41,51 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     "@nuxtjs/axios",
-    // "@nuxtjs/auth",
+    "@nuxtjs/auth",
     "@nuxtjs/svg"
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ["vee-validate/dist/rules"],
-    /*
-     ** You can extend webpack config here
-     */
-    extend(config, ctx) {}
+    transpile: ["vee-validate/dist/rules"]
   },
 
   axios: {
     baseURL: "http://localhost:8080"
-  }
+  },
 
-  // auth: {
-  //   strategies: {
-  //     local: {
-  //       endpoints: {
-  //         login: { url: "member/login", method: "post", propertyName: "data.token" },
-  //         // user: { url: "me", method: "get", propertyName: "data" },
-  //         logout: false
-  //       }
-  //     }
-  //   }
-  // }
+  auth: {
+    strategies: {
+      local: {
+        scheme: "refresh",
+        token: {
+          property: "access_token",
+          maxAge: 1800,
+          global: true
+          // type: "Bearer"
+        },
+        refreshToken: {
+          property: "refresh_token",
+          data: "refresh_token",
+          maxAge: 60 * 60 * 24 * 30
+        },
+        user: {
+          property: "user",
+          autoFetch: true
+        },
+        endpoints: {
+          login: {
+            url: "/auth/login",
+            method: "post",
+            headers: {
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            propertyName: "access_token"
+          },
+          user: { url: "/auth/user", method: "post", propertyName: "user" },
+          logout: false
+        }
+      }
+    }
+  }
 };
