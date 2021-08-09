@@ -9,8 +9,8 @@
       <ValidationObserver ref="observer" class="has-text-left">
         <form method="post" @submit.prevent="login">
           <general-input
-            name="email"
-            v-model="loginData.email"
+            name="userId"
+            v-model="loginData.userId"
             placeholder="아이디 입력"
             label="ID"
             rules="required"
@@ -59,7 +59,7 @@ export default {
   data() {
     return {
       loginData: {
-        email: "",
+        userId: "",
         password: ""
       },
       error: null,
