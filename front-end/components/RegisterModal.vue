@@ -93,6 +93,7 @@ import { ValidationObserver } from "vee-validate";
 import GeneralInput from "~/components/GeneralInput";
 import SwitchTabInput from "~/components/SwitchTabInput";
 import MultiplyIcon from "~/assets/images/multiply.svg?inline";
+import daumMaps from "@/services/daumMaps";
 
 export default {
   components: {
@@ -123,15 +124,7 @@ export default {
     };
   },
   head () {
-    return {
-      script: [
-        {
-          hid: 'daumMap',
-          src: '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js',
-          defer: true,
-        }
-      ]
-    }
+    return daumMaps
   },
   methods: {
     register() {

@@ -11,7 +11,6 @@
         :name="name"
         :placeholder="placeholder"
         v-bind:value="value"
-        v-on:input="$emit('input', $event.target.value)"
         :required="required"
         @input="$emit('input', $event.target.value)"
         @focus="$emit('focus')"
