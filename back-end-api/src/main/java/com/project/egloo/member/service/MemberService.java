@@ -1,6 +1,8 @@
 package com.project.egloo.member.service;
 
+import com.project.egloo.common.ResponseEntityObject;
 import com.project.egloo.common.StatusCode;
+import com.project.egloo.common.exceptions.ErrorCode;
 import com.project.egloo.member.domain.Member;
 import com.project.egloo.member.dto.response.SignUpResponse;
 import com.project.egloo.member.repository.MemberRepository;
@@ -17,28 +19,23 @@ public class MemberService {
     @Autowired
     MemberRepository memberRespository;
 
-    public HashMap memberSignUP(Member member, Errors errors) {
+    public Object memberSignUP(Member member, Errors errors) {
         if (errors.hasErrors()) {
-            HashMap response = new HashMap();
-            for(int i=0; i < errors.getAllErrors().size(); i++) {
-                response.put(errors.getFieldErrors().get(i).getField(), errors.getFieldErrors().get(i).getCode());
-            }
-            return new SignUpResponse(StatusCode.CLIENT_ERROR_BAD_REQUEST).response(response);
+            return new ResponseEntityObject(ErrorCode.BAD_REGISTER.getCode(),"",ErrorCode.BAD_REGISTER.getMessage());
         }
         if (memberRespository.findByUserId(member.getUserId()) != null) {
-            return new SignUpResponse(StatusCode.CLIENT_ERROR_CONFLICT).response("user already exist");
+            return new ResponseEntityObject(ErrorCode.DUPLICATED_EMAIL.getCode(),"",ErrorCode.DUPLICATED_EMAIL.getMessage());
         }
-        
         memberRespository.save(member);
-        return new SignUpResponse(StatusCode.SUCCESS_OK).response("sign up success");
+        return new ResponseEntityObject(ErrorCode.SUCCESS.getCode(),ErrorCode.SUCCESS.getMessage(),"");
     }
 
 
-    public HashMap memberLoginService(String userId, String password) {
+    public Object memberLoginService(String userId, String password) {
         Optional<Member> member = memberRespository.findByUserIdAndPassword(userId, password);
         if (member == null ) {
-            return new SignUpResponse(StatusCode.CLIENT_ERROR_NOT_FOUND).response("user ID or password not found");
+            return new ResponseEntityObject(ErrorCode.UNAUTHORIZED_MEMBER.getCode(),"",ErrorCode.UNAUTHORIZED_MEMBER.getMessage());
         }
-        return new SignUpResponse(StatusCode.SUCCESS_OK).response("login success");
+        return new ResponseEntityObject(ErrorCode.SUCCESS.getCode(),ErrorCode.SUCCESS.getMessage(),"");
     }
 }
