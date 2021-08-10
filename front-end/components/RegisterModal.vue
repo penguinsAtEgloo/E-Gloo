@@ -53,6 +53,22 @@
               v-model="email"
               placeholder="ID@example.com"
             />
+             <general-input
+              rules=""
+              label="주소입력"
+              name="address1"
+              v-model="address1"
+              placeholder="우편번호 찾기"
+              @focus="searchAddress"
+            />
+            <div ref="embed"></div>
+            <general-input
+              rules=""
+              label="상세주소"
+              name="address2"
+              v-model="address2"
+              placeholder="상세주소 입력"
+            />
             <switch-tab-input
               :items="genders"
               category="gender"
@@ -71,13 +87,13 @@
     </div>
   </div>
 </template>
-
 <script>
 import Notification from "~/components/Notification";
 import { ValidationObserver } from "vee-validate";
 import GeneralInput from "~/components/GeneralInput";
 import SwitchTabInput from "~/components/SwitchTabInput";
 import MultiplyIcon from "~/assets/images/multiply.svg?inline";
+import daumMaps from "@/services/daumMaps";
 
 export default {
   components: {
@@ -97,15 +113,19 @@ export default {
       passwordCheck: "",
       gender: "MALE",
       email: "",
-      address: "",
       error: null,
+      zonecode:"",
+      address1:"",
+      address2:"",
       genders: [
         { label: "남성", id: "MALE" },
         { label: "여성", id: "FEMALE" }
       ]
     };
   },
-
+  head () {
+    return daumMaps
+  },
   methods: {
     register() {
       this.validateValues();
@@ -118,7 +138,7 @@ export default {
         social: this.social,
         gender: this.gender,
         email: this.email,
-        address: this.address
+        address: "[" + this.zonecode + "]" + this.address1 + " " + this.address2
       };
 
       this.$store.dispatch("register", data).catch(e => {
@@ -150,6 +170,22 @@ export default {
       if (errorNum > 0) return false;
 
       return true;
+    },
+
+    searchAddress() { 
+      const postCode = new window.daum.Postcode({ 
+        width:"100%",
+        oncomplete: (data) => {
+          //roadAddress : 도로명주소, zonecode : 우편번호, buildingName : 건물명
+          const {roadAddress, zonecode, buildingName} = data;
+
+          this.zonecode = zonecode;
+          this.address1 = roadAddress + 
+            (buildingName != "" ? 
+                " (" + buildingName + ")" : "");
+        }
+      });
+      postCode.embed(this.$refs.embed)
     }
   }
 };
