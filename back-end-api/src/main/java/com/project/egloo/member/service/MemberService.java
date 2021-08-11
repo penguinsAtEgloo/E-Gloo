@@ -1,16 +1,13 @@
 package com.project.egloo.member.service;
 
 import com.project.egloo.common.ResponseEntityObject;
-import com.project.egloo.common.StatusCode;
 import com.project.egloo.common.exceptions.ErrorCode;
 import com.project.egloo.member.domain.Member;
-import com.project.egloo.member.dto.response.SignUpResponse;
 import com.project.egloo.member.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 
-import java.util.HashMap;
 import java.util.Optional;
 
 @Service
