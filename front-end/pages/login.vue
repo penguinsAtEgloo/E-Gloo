@@ -9,19 +9,17 @@
       <ValidationObserver ref="observer" class="has-text-left">
         <form method="post" @submit.prevent="login">
           <general-input
-            name="userId"
+            name="ID"
             v-model="loginData.userId"
-            placeholder="아이디 입력"
-            label="ID"
-            rules="required"
+            rules="required|alpha_dash"
+            classIn="input"
           />
           <general-input
-            name="password"
+            name="비밀번호"
             type="password"
             v-model="loginData.password"
-            placeholder="비밀번호 입력"
-            label="비밀번호"
             rules="required"
+            classIn="input"
           />
           <div class="control">
             <button type="submit" class="button is-dark is-fullwidth">

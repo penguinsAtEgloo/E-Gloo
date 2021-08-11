@@ -1,26 +1,31 @@
 <template>
-  <div class="field">
-    <ValidationProvider :rules="rules" v-slot="{ required }">
-      <label class="label" :for="name">
-        <span>{{ label || name }}</span>
-        <span>{{ required ? " *" : "" }}</span>
-      </label>
-      <input
-        :type="type"
-        class="input"
-        :name="name"
-        :placeholder="placeholder"
-        v-bind:value="value"
-        :required="required"
-        @input="$emit('input', $event.target.value)"
-        @focus="$emit('focus')"
-      />
-    </ValidationProvider>
-  </div>
+  <ValidationProvider
+    tag="div"
+    class="field"
+    :rules="rules"
+    v-slot="{ required, errors, failedRules }"
+  >
+    <label class="label" :for="name">
+      <span>{{ name }}</span>
+      <span>{{ required ? " *" : "" }}</span>
+    </label>
+    <input
+      class="input"
+      :class="{ 'needs-value': failedRules['required'] }"
+      :type="type"
+      :name="name"
+      :placeholder="placeholderMsg"
+      :value="value"
+      @input="$emit('input', $event.target.value)"
+      @focus="$emit('focus')"
+    />
+    <span class="warning">{{ !failedRules["required"] ? errors[0] : "" }}</span>
+  </ValidationProvider>
 </template>
 
 <script>
 import { ValidationProvider } from "vee-validate";
+import batchimEnding from "@/plugins/batchimEnding";
 
 export default {
   name: "GeneralInput",
@@ -28,30 +33,18 @@ export default {
     ValidationProvider
   },
   props: {
-    type: {
-      default: "text"
-    },
-    name: {
-      default: ""
-    },
-    label: {
-      default: ""
-    },
+    type: String,
+    name: String,
+    value: String,
     rules: {
       type: [Object, String],
-      default: ""
-    },
-    placeholder: {
-      default: ""
-    },
-    value: {
-      default: ""
+      default: "{}"
+    }
+  },
+  computed: {
+    placeholderMsg() {
+      return this.name + batchimEnding(this.name, "을") + " 입력해주세요.";
     }
   }
 };
 </script>
-<style scoped>
-.label {
-  text-align: left;
-}
-</style>

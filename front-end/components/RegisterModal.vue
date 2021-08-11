@@ -9,56 +9,31 @@
         <Notification :message="error" v-if="error" />
         <ValidationObserver>
           <form method="post" @submit.prevent="register">
+            <general-input rules="required" name="이름" v-model="name" />
+            <general-input rules="required" name="ID" v-model="userId" />
+            <general-input rules="required" name="연락처" v-model="phoneNo" />
             <general-input
               rules="required"
-              label="이름"
-              name="name"
-              v-model="name"
-              placeholder="이름을 입력해주세요."
-            />
-            <general-input
-              rules="required"
-              label="ID"
-              name="userId"
-              v-model="userId"
-              placeholder="아이디를 입력해주세요."
-            />
-            <general-input
-              rules="required"
-              label="연락처"
-              name="phoneNo"
-              v-model="phoneNo"
-              placeholder="연락처 입력"
-            />
-            <general-input
-              rules="required"
-              label="비밀번호"
-              name="password"
+              name="비밀번호"
               type="password"
               v-model="password"
-              placeholder="비밀번호 입력"
             />
             <general-input
               rules="required"
-              label="비밀번호 확인"
-              name="passwordCheck"
+              name="비밀번호 확인"
               type="password"
               v-model="passwordCheck"
-              placeholder="비밀번호 확인"
             />
             <general-input
               rules=""
-              label="이메일"
-              name="email"
+              name="이메일"
               v-model="email"
               placeholder="ID@example.com"
             />
-             <general-input
+            <general-input
               rules=""
-              label="주소입력"
-              name="address1"
+              name="주소"
               v-model="address1"
-              placeholder="우편번호 찾기"
               @focus="searchAddress"
             />
             <div ref="embed"></div>
@@ -67,7 +42,7 @@
               label="상세주소"
               name="address2"
               v-model="address2"
-              placeholder="상세주소 입력"
+              v-show="address1 != ''"
             />
             <switch-tab-input
               :items="genders"
@@ -114,17 +89,17 @@ export default {
       gender: "MALE",
       email: "",
       error: null,
-      zonecode:"",
-      address1:"",
-      address2:"",
+      zonecode: "",
+      address1: "",
+      address2: "",
       genders: [
         { label: "남성", id: "MALE" },
         { label: "여성", id: "FEMALE" }
       ]
     };
   },
-  head () {
-    return daumMaps
+  head() {
+    return daumMaps;
   },
   methods: {
     register() {
@@ -172,20 +147,19 @@ export default {
       return true;
     },
 
-    searchAddress() { 
-      const postCode = new window.daum.Postcode({ 
-        width:"100%",
-        oncomplete: (data) => {
+    searchAddress() {
+      const postCode = new window.daum.Postcode({
+        width: "100%",
+        oncomplete: data => {
           //roadAddress : 도로명주소, zonecode : 우편번호, buildingName : 건물명
-          const {roadAddress, zonecode, buildingName} = data;
+          const { roadAddress, zonecode, buildingName } = data;
 
           this.zonecode = zonecode;
-          this.address1 = roadAddress + 
-            (buildingName != "" ? 
-                " (" + buildingName + ")" : "");
+          this.address1 =
+            roadAddress + (buildingName != "" ? " (" + buildingName + ")" : "");
         }
       });
-      postCode.embed(this.$refs.embed)
+      postCode.embed(this.$refs.embed);
     }
   }
 };
