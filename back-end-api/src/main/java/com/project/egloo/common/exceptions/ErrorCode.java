@@ -14,6 +14,7 @@ public enum ErrorCode {
     ENTITY_NOT_FOUND(400, "C_005", "지정한 Entity를 찾을 수 없습니다."),
 
 //    auth
+    SUCCESS(200,"AU_000","요청에 성공하였습니다."),
     AUTH_ERROR(400, "AU_001", "인증 관련 오류가 발생했습니다."),
     DUPLICATED_EMAIL(400, "AU_002", "이미 존재하는 아이디입니다."),
     DUPLICATED_NICKNAME(400, "AU_003", "이미 존재하는 닉네임입니다."),

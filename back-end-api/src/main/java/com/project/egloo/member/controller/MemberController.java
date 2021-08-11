@@ -7,7 +7,6 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.HashMap;
 
 @RestController
 @RequestMapping("/auth")
@@ -17,12 +16,12 @@ public class MemberController {
     private MemberService memberService;
 
     @PostMapping("/login")
-    public HashMap memberLogin(String userId, String password) {
+    public Object memberLogin(String userId, String password) {
         return memberService.memberLoginService(userId, password);
     }
 
     @PostMapping("/signup")
-    public HashMap memberSignUp(@Valid Member member, Errors errors) {
+    public Object memberSignUp(@Valid Member member, Errors errors) {
         return memberService.memberSignUP(member, errors);
     }
 
