@@ -1,47 +1,44 @@
 package com.project.egloo.recipe.service;
 
-import com.project.egloo.common.ResponseEntityObject;
-import com.project.egloo.common.exceptions.ErrorCode;
 import com.project.egloo.ingredient.domain.Ingredient;
 import com.project.egloo.ingredient.repository.IngredientRepository;
 import com.project.egloo.recipe.domain.Cooking;
 import com.project.egloo.recipe.repository.CookingRepository;
 import com.project.egloo.recipe.repository.RecipeRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class RecipeService {
 
-    @Autowired
-    private RecipeRepository recipeRepository;
-    @Autowired
-    private CookingRepository cookingRepository;
-    @Autowired
-    private IngredientRepository ingredientRepository;
+    private final RecipeRepository recipeRepository;
+    private final CookingRepository cookingRepository;
+    private final IngredientRepository ingredientRepository;
+
+    public RecipeService(RecipeRepository recipeRepository, CookingRepository cookingRepository, IngredientRepository ingredientRepository){
+        this.recipeRepository = recipeRepository;
+        this.cookingRepository = cookingRepository;
+        this.ingredientRepository = ingredientRepository;
+    }
 
 
-    public Object getRecipeByIngredients(ArrayList ingredient_list) {
+    public Object getRecipeByIngredients(ArrayList<String> ingredientNameList) {
         ArrayList intersection = new ArrayList();
 
-        for(int i=0; i < ingredient_list.size(); i++){
-            Optional<Ingredient> ingredient = ingredientRepository.findByName(ingredient_list.get(i).toString());
-            List<Cooking> cooking_list = cookingRepository.findByIngredient(ingredient.get());
-            List recipeId = new ArrayList();
-            System.out.println(cooking_list.toString());
+        List<Ingredient> ingredientList = ingredientRepository.findByNameIn(ingredientNameList);
+        List cooks = ingredientList.stream().map(obj -> cookingRepository.findByIngredient(obj)).collect(Collectors.toList());
 
-            for(int j=0; j < cooking_list.size(); j++){
-                Cooking map = cooking_list.get(j);
-                recipeId.add(map.getRecipe().getName());
-            }
-
-            intersection.add(recipeId);
+        for(int i=0; i < cooks.size(); i++) {
+            List<Cooking> cooksList = (List<Cooking>) cooks.get(i);
+            intersection.add(cooksList.stream().map(obj -> obj.getRecipe().getName()).collect(Collectors.toList()));
         }
-        return new ResponseEntityObject(ErrorCode.SUCCESS.getCode(), intersection(intersection).toString(),"");
-
+        return intersection(intersection);
     }
+
 
     public HashSet intersection(ArrayList inputArrays)
     {
