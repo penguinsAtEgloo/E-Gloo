@@ -65,9 +65,9 @@ input {
   color: red;
   font-size: 0.7rem;
 }
-input.needs-value {
+input.required-warning {
   animation: shake 0.2s ease-in-out 0s 2;
 }
-input.needs-value::placeholder {
+input.required-warning::placeholder {
   color: red;
 }

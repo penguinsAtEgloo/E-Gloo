@@ -9,9 +9,9 @@
       <ValidationObserver ref="observer" class="has-text-left">
         <form method="post" @submit.prevent="login">
           <general-input
-            name="ID"
-            v-model="loginData.userId"
-            rules="required|alpha_dash"
+            name="이메일"
+            v-model="loginData.email"
+            rules="required"
             classIn="input"
           />
           <general-input
@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       loginData: {
-        userId: "",
+        email: "",
         password: ""
       },
       error: null,

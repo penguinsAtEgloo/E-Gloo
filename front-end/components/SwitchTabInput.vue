@@ -8,8 +8,7 @@
       <div class="field switch-field">
         <template :items="items" v-for="item in items">
           <input
-            @click="bind($event.target.value)"
-            v-model="chekedValue"
+            v-model="value"
             type="radio"
             :id="item.id"
             :key="item.id"
@@ -31,37 +30,26 @@ export default {
     ValidationProvider
   },
   props: {
-    id: {
-      default: ""
-    },
-    label: {
-      default: ""
-    },
-    category: {
-      default: ""
-    },
+    label: String,
+    category: String,
     rules: {
       type: [Object, String],
-      default: ""
+      default: {}
     },
     items: {
       type: Array,
-      default: ""
-    }
+      default: []
+    },
+    valueIn: String
   },
-  computed: {
-    chekedValue: {
-      get() {
-        return this.value;
-      },
-      set(newValue) {
-        return newValue;
-      }
-    }
+  data() {
+    return {
+      value: this.valueIn
+    };
   },
-  methods: {
-    bind(value) {
-      this.$emit("input", value);
+  watch: {
+    valueIn(newVal, val) {
+      this.value = newVal;
     }
   }
 };

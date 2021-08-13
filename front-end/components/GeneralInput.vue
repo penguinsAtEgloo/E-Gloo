@@ -4,18 +4,21 @@
     class="field"
     :rules="rules"
     v-slot="{ required, errors, failedRules }"
+    :vid="name"
   >
     <label class="label" :for="name">
       <span>{{ name }}</span>
       <span>{{ required ? " *" : "" }}</span>
+      <span><slot></slot></span>
     </label>
     <input
       class="input"
-      :class="{ 'needs-value': failedRules['required'] }"
+      :class="{ 'required-warning': failedRules['required'] }"
       :type="type"
       :name="name"
-      :placeholder="placeholderMsg"
+      :placeholder="placeholder"
       :value="value"
+      :disabled="isDisabled"
       @input="$emit('input', $event.target.value)"
       @focus="$emit('focus')"
     />
@@ -36,14 +39,29 @@ export default {
     type: String,
     name: String,
     value: String,
+    placeholder: String,
     rules: {
       type: [Object, String],
       default: "{}"
+    },
+    initDisabled: {
+      type: Boolean,
+      default: false
     }
   },
+  data() {
+    return {
+      disabled: this.initDisabled
+    };
+  },
   computed: {
-    placeholderMsg() {
-      return this.name + batchimEnding(this.name, "을") + " 입력해주세요.";
+    isDisabled() {
+      return this.disabled ? this.disabled : undefined;
+    }
+  },
+  watch: {
+    initDisabled(newVal, val) {
+      this.disabled = newVal;
     }
   }
 };
