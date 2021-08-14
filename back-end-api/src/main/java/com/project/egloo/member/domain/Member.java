@@ -5,11 +5,13 @@ import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
+import java.util.Collection;
 import java.util.UUID;
 
 @Entity
@@ -63,6 +65,9 @@ public class Member {
 
     @ColumnDescription("유저 Role")
     private MemberRole role;
+
+    public Member(String subject, String s, Collection<? extends GrantedAuthority> authorities) {
+    }
 
     public String roleName(){
         return role.name();
