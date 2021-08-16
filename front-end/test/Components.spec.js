@@ -9,6 +9,8 @@ import SwitchTabInput from "@/components/SwitchTabInput.vue";
 import TabItem from "@/components/TabItem.vue";
 import Recipe from "@/components/Recipe.vue";
 import flushPromises from "flush-promises";
+import "@/plugins/vee-validate";
+
 describe("GeneralInput", () => {
   test("is a Vue instance", () => {
     const wrapper = mount(GeneralInput);

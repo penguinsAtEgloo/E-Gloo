@@ -19,6 +19,7 @@
     "vee-validate": "^3.4.10"
   },
   "devDependencies": {
+    "@nuxt/test-utils": "^0.2.2",
     "@nuxtjs/style-resources": "^1.2.0",
     "@nuxtjs/svg": "^0.1.12",
     "@vue/test-utils": "^1.2.1",

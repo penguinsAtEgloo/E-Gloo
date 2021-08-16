@@ -1,8 +1,6 @@
 import { extend, setInteractionMode } from "vee-validate";
 import {
   required,
-  numeric,
-  min,
   max,
   alpha_dash,
   confirmed,
@@ -10,11 +8,12 @@ import {
 } from "vee-validate/dist/rules";
 import batchimEnding from "@/plugins/batchimEnding";
 
-setInteractionMode("passive");
+setInteractionMode("aggressive");
 
 extend("required", {
   ...required,
-  message: "{_field_}" + batchimEnding("{_field_}", "을") + " 입력해주세요."
+  message: "{_field_}" + batchimEnding("{_field_}", "을") + " 입력해주세요.",
+  computesRequired: true
 });
 
 extend("alpha_dash", {
@@ -25,9 +24,10 @@ extend("alpha_dash", {
     " 알파벳이나 '-', '_', 숫자의 조합으로만 입력할 수 있습니다."
 });
 
-extend("min", min);
-extend("max", max);
-extend("numeric", numeric);
+extend("max", {
+  ...max,
+  message: "{length}자 이상 입력 불가합니다."
+});
 
 extend("min", {
   validate(value, { min }) {
@@ -38,11 +38,6 @@ extend("min", {
     "{_field_}" +
     batchimEnding("{_field_}", "은") +
     " 최소 {min}자리 이상, {max}자리 이하여야 합니다."
-});
-
-extend("max", {
-  ...max,
-  message: "{length}자 이상 입력 불가합니다."
 });
 
 extend("complex", {

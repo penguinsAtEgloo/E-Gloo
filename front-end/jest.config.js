@@ -8,19 +8,15 @@ module.exports = {
   moduleFileExtensions: ["js", "vue", "json"],
   transform: {
     "^.+\\.js$": "babel-jest",
-    ".*\\.(vue)$": "vue-jest",
-    "vee-validate/dist/rules": "babel-jest",
-    "vee-validate.js": "babel-jest"
+    ".*\\.(vue)$": "vue-jest"
   },
-  transformIgnorePatterns: [
-    "<rootDir>/node_modules/(?!vee-validate/dist/rules)",
-    "<roodDir>/plugins/vee-validate.js"
-  ],
+  transformIgnorePatterns: ["node_modules/(?!(vee-validate/dist/rules))"],
   collectCoverage: true,
   collectCoverageFrom: [
     "<rootDir>/components/**/*.vue",
     "<rootDir>/pages/**/*.vue"
   ],
   testEnvironment: "jsdom",
-  setupFilesAfterEnv: ["<rootDir>/test/jest.setup.js"]
+  setupFilesAfterEnv: ["<rootDir>/test/jest.setup.js"],
+  preset: "@nuxt/test-utils"
 };

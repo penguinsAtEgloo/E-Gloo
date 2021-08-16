@@ -28,7 +28,6 @@
 
 <script>
 import { ValidationProvider } from "vee-validate";
-import batchimEnding from "@/plugins/batchimEnding";
 
 export default {
   name: "GeneralInput",
