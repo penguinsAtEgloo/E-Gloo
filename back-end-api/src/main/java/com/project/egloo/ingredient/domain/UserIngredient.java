@@ -10,18 +10,20 @@ import java.util.UUID;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
+@IdClass(UserIngredientIDclass.class)
 @Getter
 @Setter
 @Data
 public class UserIngredient {
 
     @Id
+    @Column(columnDefinition = "BINARY(16)")
     @ColumnDescription("PK")
     private UUID userId;
 
-    @ManyToOne
+    @Id
     @ColumnDescription("재료 ID")
-    private Ingredient ingredient;
+    private Long ingredientId;
 
     @ColumnDescription("수량")
     private int quantitiy;
