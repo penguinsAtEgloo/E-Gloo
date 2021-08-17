@@ -8,6 +8,8 @@ import RegisterModal from "@/components/RegisterModal.vue";
 import SwitchTabInput from "@/components/SwitchTabInput.vue";
 import TabItem from "@/components/TabItem.vue";
 import Recipe from "@/components/Recipe.vue";
+import flushPromises from "flush-promises";
+import "@/plugins/vee-validate";
 
 describe("GeneralInput", () => {
   test("is a Vue instance", () => {
@@ -38,9 +40,25 @@ describe("Notification", () => {
 });
 
 describe("RegisterModal", () => {
+  const wrapper = mount(RegisterModal);
+  const registerButton = wrapper.find("button");
   test("is a Vue instance", () => {
-    const wrapper = mount(RegisterModal);
     expect(wrapper.vm).toBeTruthy();
+  });
+  test("required inputs missing", async () => {
+    registerButton.trigger("click");
+    await flushPromises();
+    expect(wrapper.emitted()).not.toHaveProperty("register");
+    expect(wrapper.find(".warning").text()).not;
+  });
+  test("required inputs put", async () => {
+    wrapper.find("input[name='닉네임']").setValue("abc");
+    wrapper.find("input[name='비밀번호']").setValue("asdfASDF");
+    wrapper.find("input[name='이메일']").setValue("abc123");
+    await flushPromises();
+    expect(wrapper.find(".warning").text()).toBe("");
+    await registerButton.trigger("click");
+    expect(wrapper.emitted()).not.toHaveProperty("register");
   });
 });
 
