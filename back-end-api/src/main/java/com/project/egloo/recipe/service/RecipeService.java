@@ -1,44 +1,47 @@
 package com.project.egloo.recipe.service;
 
+import com.project.egloo.ingredient.domain.Ingredient;
+import com.project.egloo.ingredient.repository.IngredientRepository;
+import com.project.egloo.recipe.domain.Cooking;
+import com.project.egloo.recipe.repository.CookingRepository;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
+@Slf4j
 @Service
+@RequiredArgsConstructor
 public class RecipeService {
 
-//    추후 검색어 개발할때 수중할 예정
-    public HashMap getRecipeByIngredients(ArrayList lis) {
-//        ArrayList intersection = new ArrayList();
-//        for(int i=0; i < lis.size(); i++){
-//            List mappingList =  ingredientRecipeMappingRepository.findByIngredient_id(Long.parseLong((String) lis.get(i)));
-//            List recipeNames = new ArrayList();
-//            for(int j=0; j < mappingList.size(); j++){
-//                IngredientRecipeMapping map = (IngredientRecipeMapping) mappingList.get(j);
-//                recipeNames.add(map.getRecipe().getName());
-//            }
-//            intersection.add(recipeNames);
-//        }
-//        return  response(intersection(intersection));
-        return null;
+    private final CookingRepository cookingRepository;
+    private final IngredientRepository ingredientRepository;
+
+
+    public HashSet getRecipeByIngredients(List<String> ingredientNames) {
+        List<List<String>> intersection = new ArrayList();
+
+        List<Ingredient> ingredients = ingredientRepository.findByNameIn(ingredientNames);
+        List<List<Cooking>> cooks = ingredients.stream().map(obj -> cookingRepository.findByIngredient(obj)).collect(Collectors.toList());
+
+        for(int i=0; i < cooks.size(); i++) {
+            List<Cooking> cookings = cooks.get(i);
+            intersection.add(cookings.stream().map(obj -> obj.getRecipe().getName()).collect(Collectors.toList()));
+        }
+        return intersection(intersection);
     }
 
-    public HashSet intersection(ArrayList inputArrays)
+
+    public HashSet intersection(List<List<String>> recipeNames)
     {
-        HashSet intersectionSet = new HashSet((Collection) inputArrays.get(0));
-        for (int i = 1; i < inputArrays.size(); i++)
+        HashSet intersectionSet = new HashSet(recipeNames.get(0));
+        for (int i = 1; i < recipeNames.size(); i++)
         {
-            HashSet innerset = new HashSet((Collection) inputArrays.get(i));
+            HashSet innerset = new HashSet(recipeNames.get(i));
             intersectionSet.retainAll(innerset);
         }
         return intersectionSet;
-    }
-
-    public HashMap response(Object object){
-        HashMap res = new HashMap();
-        res.put("code", "200");
-        res.put("msg",object);
-        res.put("errors","");
-        return res;
     }
 }

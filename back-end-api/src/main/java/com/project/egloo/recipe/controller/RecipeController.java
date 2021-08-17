@@ -1,22 +1,24 @@
 package com.project.egloo.recipe.controller;
 
+import com.project.egloo.common.ResponseEntityObject;
+import com.project.egloo.common.exceptions.ErrorCode;
 import com.project.egloo.recipe.service.RecipeService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.List;
 
 
 @RestController
 @RequestMapping("/recipe")
+@RequiredArgsConstructor
 public class RecipeController {
 
-    @Autowired
-    private RecipeService recipeService;
+    private final RecipeService recipeService;
+
 
     @GetMapping("/getRecipeByIngredients")
-    public HashMap recipeByIngredients(@RequestParam ArrayList ingredient){
-        return recipeService.getRecipeByIngredients(ingredient);
+    public ResponseEntityObject recipeByIngredients(@RequestParam List<String> ingredients){
+        return new ResponseEntityObject(ErrorCode.SUCCESS.getCode(), recipeService.getRecipeByIngredients(ingredients).toString(),"");
     }
 }
