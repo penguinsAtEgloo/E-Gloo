@@ -1,6 +1,7 @@
 package com.project.egloo.config.security;
 
 import com.project.egloo.member.domain.Member;
+import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -8,6 +9,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.util.Collection;
 import java.util.Collections;
 
+@Data
 public class UserPrincipal implements UserDetails {
 	private Member member;
 

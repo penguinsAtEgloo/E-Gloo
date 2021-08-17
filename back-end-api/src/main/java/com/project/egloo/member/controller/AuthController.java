@@ -1,5 +1,6 @@
 package com.project.egloo.member.controller;
 
+import com.project.egloo.common.AuthMember;
 import com.project.egloo.config.jwt.JwtFilter;
 import com.project.egloo.config.jwt.TokenProvider;
 import com.project.egloo.member.dto.request.LoginRequest;
