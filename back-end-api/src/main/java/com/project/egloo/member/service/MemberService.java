@@ -1,6 +1,5 @@
 package com.project.egloo.member.service;
 
-import com.project.egloo.common.ResponseEntityObject;
 import com.project.egloo.common.exceptions.AuthException;
 import com.project.egloo.common.exceptions.ErrorCode;
 import com.project.egloo.member.domain.Member;
@@ -12,15 +11,16 @@ import com.project.egloo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
-import javax.transaction.Transactional;
 
 @Service
+@Transactional(readOnly = true)
 @RequiredArgsConstructor
 public class MemberService {
 
-    private final MemberRepository memberRespository;
+    private final MemberRepository memberRepository;
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
@@ -28,8 +28,8 @@ public class MemberService {
         if (errors.hasErrors()) {
             throw new Exception();
         }
-        memberRespository.findByUserId(signUpRequest.getUserId()).orElseThrow(()->new AuthException(ErrorCode.DUPLICATED_ID));
-        memberRespository.findByEmail(signUpRequest.getEmail()).orElseThrow(()->new AuthException(ErrorCode.DUPLICATED_EMAIL));
+        memberRepository.findByUserId(signUpRequest.getUserId()).orElseThrow(()->new AuthException(ErrorCode.DUPLICATED_ID));
+        memberRepository.findByEmail(signUpRequest.getEmail()).orElseThrow(()->new AuthException(ErrorCode.DUPLICATED_EMAIL));
 
         Member member = Member.builder()
                 .email(signUpRequest.getEmail())
@@ -42,7 +42,7 @@ public class MemberService {
 
         member.setPassword(passwordEncoder.encode(member.getPassword()));
 
-        memberRespository.save(member);
+        memberRepository.save(member);
         return SignUpResponse.of(member.getId());
     }
 }

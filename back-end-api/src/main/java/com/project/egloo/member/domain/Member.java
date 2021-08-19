@@ -25,7 +25,7 @@ public class Member {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "VARCHAR2")
+    @Column(columnDefinition = "VARCHAR")
     @ColumnDescription("PK")
     private UUID id;
     
