@@ -1,38 +1,48 @@
 package com.project.egloo.member.service;
 
-import com.project.egloo.common.ResponseEntityObject;
+import com.project.egloo.common.exceptions.AuthException;
 import com.project.egloo.common.exceptions.ErrorCode;
 import com.project.egloo.member.domain.Member;
+import com.project.egloo.member.domain.MemberRole;
+import com.project.egloo.member.domain.Social;
+import com.project.egloo.member.dto.request.SignUpRequest;
+import com.project.egloo.member.dto.response.SignUpResponse;
 import com.project.egloo.member.repository.MemberRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
 
-import java.util.Optional;
 
 @Service
+@Transactional(readOnly = true)
+@RequiredArgsConstructor
 public class MemberService {
 
-    @Autowired
-    MemberRepository memberRespository;
+    private final MemberRepository memberRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public Object memberSignUP(Member member, Errors errors) {
+    @Transactional
+    public SignUpResponse memberSignUP(SignUpRequest signUpRequest, Errors errors) throws Exception {
         if (errors.hasErrors()) {
-            return new ResponseEntityObject(ErrorCode.BAD_REGISTER.getCode(),"",ErrorCode.BAD_REGISTER.getMessage());
+            throw new Exception();
         }
-        if (memberRespository.findByUserId(member.getUserId()) != null) {
-            return new ResponseEntityObject(ErrorCode.DUPLICATED_EMAIL.getCode(),"",ErrorCode.DUPLICATED_EMAIL.getMessage());
-        }
-        memberRespository.save(member);
-        return new ResponseEntityObject(ErrorCode.SUCCESS.getCode(),ErrorCode.SUCCESS.getMessage(),"");
-    }
+        memberRepository.findByUserId(signUpRequest.getUserId()).orElseThrow(()->new AuthException(ErrorCode.DUPLICATED_ID));
+        memberRepository.findByEmail(signUpRequest.getEmail()).orElseThrow(()->new AuthException(ErrorCode.DUPLICATED_EMAIL));
+
+        Member member = Member.builder()
+                .email(signUpRequest.getEmail())
+                .password(signUpRequest.getPassword())
+                .role(MemberRole.ROLE_USER)
+                .social(Social.LOCAL)
+                .address(signUpRequest.getAddress())
+                .build();
 
 
-    public Object memberLoginService(String userId, String password) {
-        Optional<Member> member = memberRespository.findByUserIdAndPassword(userId, password);
-        if (member == null ) {
-            return new ResponseEntityObject(ErrorCode.UNAUTHORIZED_MEMBER.getCode(),"",ErrorCode.UNAUTHORIZED_MEMBER.getMessage());
-        }
-        return new ResponseEntityObject(ErrorCode.SUCCESS.getCode(),ErrorCode.SUCCESS.getMessage(),"");
+        member.setPassword(passwordEncoder.encode(member.getPassword()));
+
+        memberRepository.save(member);
+        return SignUpResponse.of(member.getId());
     }
 }

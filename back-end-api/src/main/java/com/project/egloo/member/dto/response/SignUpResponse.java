@@ -1,18 +1,18 @@
 package com.project.egloo.member.dto.response;
 
-import java.util.HashMap;
 
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+
+import java.util.UUID;
+
+@Getter
+@AllArgsConstructor
 public class SignUpResponse {
-    private int code;
 
-    public SignUpResponse(int code) {
-        this.code = code;
-    }
+    private UUID uuid;
 
-    public HashMap response(Object msg){
-        HashMap response = new HashMap();
-        response.put("code",this.code);
-        response.put("msg", msg);
-        return response;
+    public static SignUpResponse of(UUID id){
+        return new SignUpResponse(id);
     }
 }

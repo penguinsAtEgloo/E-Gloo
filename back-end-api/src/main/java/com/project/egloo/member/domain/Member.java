@@ -15,7 +15,6 @@ import java.util.Collection;
 import java.util.UUID;
 
 @Entity
-@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Getter
 @Setter
@@ -26,21 +25,17 @@ public class Member {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "BINARY(16)")
+    @Column(columnDefinition = "VARCHAR")
     @ColumnDescription("PK")
     private UUID id;
     
     @Column(unique = true)
-    @NotNull@NotBlank
     @ColumnDescription("유저 아이디")
     private String userId;
     
     @ColumnDescription("유저 이름")
     private String name;
 
-    @NotNull@NotBlank
-    @Length(min = 8, max = 20)
-    @Pattern(regexp = "^((?=.*[a-z0-9])(?=.*[A-Z]).{8,20})|((?=.*[a-z0-9])(?=.*[^a-zA-Z0-9가-힣]).{8,20})$")
     @ColumnDescription("비밀번호")
     private String password;
 
@@ -49,7 +44,6 @@ public class Member {
     @ColumnDescription("유저 회원가입 경로")
     private Social social;
 
-    @NotNull@NotBlank
     @ColumnDescription("유저 휴대폰 번호")
     private String phoneNo;
 
@@ -67,6 +61,19 @@ public class Member {
     private MemberRole role;
 
     public Member(String subject, String s, Collection<? extends GrantedAuthority> authorities) {
+    }
+
+    @Builder
+    public Member(String userId, String name, String password, Social social, String phoneNo, Gender gender, String email, String address, MemberRole role) {
+        this.userId = userId;
+        this.name = name;
+        this.password = password;
+        this.social = social;
+        this.phoneNo = phoneNo;
+        this.gender = gender;
+        this.email = email;
+        this.address = address;
+        this.role = role;
     }
 
     public String roleName(){
