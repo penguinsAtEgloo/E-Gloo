@@ -1,6 +1,7 @@
 package com.project.egloo.ingredient.service;
 
 import com.project.egloo.ingredient.domain.Ingredient;
+import com.project.egloo.ingredient.domain.UserIngredient;
 import com.project.egloo.ingredient.repository.IngredientRepository;
 import com.project.egloo.ingredient.repository.UserIngredientRepository;
 import lombok.RequiredArgsConstructor;
@@ -18,9 +19,8 @@ public class IngredientService {
     private final IngredientRepository ingredientRepository;
 
     public List<Ingredient> userIngredient(UUID userId){
-        List<Long> ingredientsIds = userIngredientRepository.findByUserId(userId).stream().map(obj -> obj.getIngredientId()).collect(Collectors.toList());
-        List<Ingredient> ingredients = ingredientRepository.findAllById(ingredientsIds);
-        return ingredients;
+        List<Long> ingredientsIds = userIngredientRepository.findByUserId(userId).stream().map(UserIngredient::getIngredientId).collect(Collectors.toList());
+        return ingredientRepository.findAllById(ingredientsIds);
     }
 
 }
