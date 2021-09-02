@@ -53,3 +53,55 @@ export const removeRecipeBookmark = async (
   const recipeBookmarks = state.recipeBookmarks.filter(bm => bm != recipeId);
   commit("updateRecipeBookmark", { recipeBookmarks });
 };
+
+export const updateRecommendTime = async (
+  { commit, state },
+  { time, bool }
+) => {
+  //추천 옵션 변경
+  //RecipesRecommended get : axios.get()으로 변경
+  const recommendTime = Object.assign({}, state.recommendTime);
+  recommendTime[time] = bool;
+  const recipesRecommended = recipes;
+
+  //delay 0.2seconds for loading test
+  await new Promise(resolve => setTimeout(resolve, 200));
+
+  commit("getRecipesRecommended", { recipesRecommended });
+  commit("updateRecommendTime", { recommendTime })
+};
+
+export const updateRecommendKind = async (
+  { commit, state },
+  { kind, bool }
+) => {
+  //추천 옵션 변경
+  //RecipesRecommended get : axios.get()으로 변경
+  const recommendKind = Object.assign({}, state.recommendKind);
+  recommendKind[kind] = bool;
+  const recipesRecommended = recipes;
+
+  //delay 0.2seconds for loading test
+  await new Promise(resolve => setTimeout(resolve, 200));
+
+  commit("getRecipesRecommended", { recipesRecommended });
+  commit("updateRecommendKind", { recommendKind })
+};
+
+export const updateRecommendTheme = async (
+  { commit, state },
+  { theme, bool }
+) => {
+  //추천 옵션 변경
+  //RecipesRecommended get : axios.get()으로 변경
+  const recommendTheme = Object.assign({}, state.recommendTheme);
+  recommendTheme[theme] = bool;
+  const recipesRecommended = recipes;
+
+  //delay 0.2seconds for loading test
+  await new Promise(resolve => setTimeout(resolve, 200));
+
+  commit("getRecipesRecommended", { recipesRecommended });
+  commit("updateRecommendTheme", { recommendTheme })
+};
+
