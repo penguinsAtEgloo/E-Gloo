@@ -12,11 +12,13 @@
   "dependencies": {
     "@nuxtjs/auth": "^4.9.1",
     "@nuxtjs/axios": "^5.13.6",
+    "@nuxtjs/vuetify": "^1.12.1",
     "bootstrap": "^4.6.0",
     "core-js": "^3.15.1",
     "nuxt": "^2.15.7",
     "request": "^2.79.0",
-    "vee-validate": "^3.4.10"
+    "vee-validate": "^3.4.10",
+    "vue-infinite-loading": "^2.4.5"
   },
   "devDependencies": {
     "@nuxt/test-utils": "^0.2.2",
