@@ -1,6 +1,7 @@
 package com.project.egloo.recipe.domain;
 
 import com.project.egloo.common.ColumnDescription;
+import com.project.egloo.recipe.dto.RecipeDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -67,4 +68,34 @@ public class Recipe {
 
     @ColumnDescription("수정일자")
     private OffsetDateTime updatedAt;
+
+    public Recipe(Category category, String name, String summary, Difficulty difficulty, String image, int price) {
+        this.category = category;
+        this.name = name;
+        this.summary = summary;
+        this.difficulty = difficulty;
+        this.ratings = 0.0;
+        this.image = image;
+        this.price = price;
+        this.countLike = 0;
+        this.countReview = 0;
+        this.createdAt = OffsetDateTime.now();
+    }
+
+    public RecipeDTO toDTO() {
+        return new RecipeDTO(
+            this.id,
+            this.category.toBasicDTO(),
+            this.name,
+            this.summary,
+            this.difficulty,
+            this.ratings,
+            this.image,
+            this.price,
+            this.countLike,
+            this.countReview,
+            this.createdAt,
+            this.updatedAt
+        );
+    }
 }

@@ -1,6 +1,7 @@
 package com.project.egloo.recipe.domain;
 
 import com.project.egloo.common.ColumnDescription;
+import com.project.egloo.recipe.dto.BasicCategoryDTO;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -32,4 +33,17 @@ public class Category {
 
     @ColumnDescription("생성일자")
     private OffsetDateTime createdAt;
+
+    public Category(String name) {
+        this.name = name;
+        this.createdAt = OffsetDateTime.now();
+    }
+
+    public BasicCategoryDTO toBasicDTO() {
+        return new BasicCategoryDTO(
+            this.id,
+            this.name,
+            this.createdAt
+        );
+    }
 }

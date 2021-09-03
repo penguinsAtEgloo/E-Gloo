@@ -2,8 +2,15 @@ package com.project.egloo.recipe.service;
 
 import com.project.egloo.ingredient.domain.Ingredient;
 import com.project.egloo.ingredient.repository.IngredientRepository;
+import com.project.egloo.recipe.domain.Category;
 import com.project.egloo.recipe.domain.Cooking;
+import com.project.egloo.recipe.domain.Recipe;
+import com.project.egloo.recipe.dto.CreateRecipeDTO;
+import com.project.egloo.recipe.dto.RecipeDTO;
+import com.project.egloo.recipe.exception.CategoryNotFoundException;
+import com.project.egloo.recipe.repository.CategoryRepository;
 import com.project.egloo.recipe.repository.CookingRepository;
+import com.project.egloo.recipe.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -20,7 +27,8 @@ public class RecipeService {
 
     private final CookingRepository cookingRepository;
     private final IngredientRepository ingredientRepository;
-
+    private final CategoryRepository categoryRepository;
+    private final RecipeRepository recipeRepository;
 
     public HashSet getRecipeByIngredients(List<String> ingredientNames) {
         List<List<String>> intersection = new ArrayList();
@@ -43,5 +51,21 @@ public class RecipeService {
             intersectionSet.retainAll(innerset);
         }
         return intersectionSet;
+    }
+
+    public RecipeDTO createRecipe(CreateRecipeDTO recipeInfo) {
+        Category category = categoryRepository.findByName(recipeInfo.getCategoryName())
+            .orElseThrow(() -> new CategoryNotFoundException("No category where name: " + recipeInfo.getCategoryName()));
+
+        Recipe recipe = new Recipe(
+            category,
+            recipeInfo.getName(),
+            recipeInfo.getSummary(),
+            recipeInfo.getDifficulty(),
+            recipeInfo.getImage(),
+            recipeInfo.getPrice()
+        );
+
+        return recipeRepository.save(recipe).toDTO();
     }
 }

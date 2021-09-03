@@ -2,26 +2,35 @@ package com.project.egloo.recipe.controller;
 
 import com.project.egloo.common.ResponseEntityObject;
 import com.project.egloo.common.exceptions.ErrorCode;
+import com.project.egloo.recipe.dto.CreateRecipeDTO;
+import com.project.egloo.recipe.dto.RecipeDTO;
 import com.project.egloo.recipe.service.RecipeService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/recipe")
+@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE})
 @RequiredArgsConstructor
 public class RecipeController {
 
     private final RecipeService recipeService;
 
-
     @GetMapping("/getRecipeByIngredients")
     public ResponseEntityObject recipeByIngredients(@RequestParam List<String> ingredients) {
         return new ResponseEntityObject(ErrorCode.SUCCESS.getCode(), recipeService.getRecipeByIngredients(ingredients).toString(), "");
+    }
+
+    @PostMapping("/api/v1/recipes")
+    public ResponseEntity<RecipeDTO> createRecipe(
+        @RequestBody CreateRecipeDTO recipeInfo
+    ) {
+        RecipeDTO recipe = recipeService.createRecipe(recipeInfo);
+
+        return ResponseEntity.ok(recipe);
     }
 }

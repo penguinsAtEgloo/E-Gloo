@@ -48,4 +48,14 @@ public class Cooking {
 
     @ColumnDescription("생성일자")
     private OffsetDateTime createdAt;
+
+    public Cooking(Recipe recipe, Ingredient ingredient, int quantity, Unit unit, int price, boolean isNecessary) {
+        this.recipe = recipe;
+        this.ingredient = ingredient;
+        this.quantity = quantity;
+        this.unit = unit;
+        this.price = price;
+        this.isNecessary = isNecessary;
+        this.createdAt = OffsetDateTime.now();
+    }
 }
