@@ -5,3 +5,7 @@ export const isAuthenticated = state => {
 export const loggedInUser = state => {
   return state.auth.user;
 };
+
+export const storedRecentSearch = state => {
+  return state.recentSearched;
+};
