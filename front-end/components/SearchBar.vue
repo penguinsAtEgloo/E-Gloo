@@ -11,7 +11,7 @@
           :placeholder="placeholdVal"
           autocomplete="off"
         />
-        <search-icon id="searchIcon" />
+        <search-icon id="searchIcon" @click="$emit('search', searchData)" />
       </div>
       <div id="searchResultWrapper" v-show="focused">
         <p id="title">{{ title }}</p>
