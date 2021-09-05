@@ -38,6 +38,7 @@ public class Member {
     @ColumnDescription("유저 이름")
     private String name;
 
+    // {영문 숫자, 대문자},{영문 숫자, 특수문자} 조합을 사용합니다.
     @Length(min = 8, max = 20)
     @Pattern(regexp = "^((?=.*[a-z0-9])(?=.*[A-Z]).{8,20})|((?=.*[a-z0-9])(?=.*[^a-zA-Z0-9가-힣]).{8,20})$")
     @ColumnDescription("비밀번호")

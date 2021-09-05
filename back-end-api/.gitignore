@@ -3,6 +3,7 @@ HELP.md
 build/
 .gradle/**
 *.yml
+*.yaml
 *.properties
 
 ### IntelliJ IDEA ###

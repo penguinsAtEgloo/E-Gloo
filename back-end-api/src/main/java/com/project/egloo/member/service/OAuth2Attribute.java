@@ -1,7 +1,6 @@
 package com.project.egloo.member.service;
 
 import lombok.*;
-import org.springframework.security.core.userdetails.User;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,11 +21,35 @@ public class OAuth2Attribute {
                 return ofNaver("id", attributes);
             case "kakao":
                 return ofKakao("id", attributes);
+            case "facebook":
+                return ofFacebook("id", attributes);
+            case "google":
+                return ofGoogle("id", attributes);
             default:
                 throw new RuntimeException();
         }
     }
 
+    private static OAuth2Attribute ofGoogle(String attributeKey, Map<String, Object> attributes) {
+        return OAuth2Attribute.builder()
+                .name((String) attributes.get("name"))
+                .email((String) attributes.get("email"))
+                .attributeKey(attributeKey)
+                .attributes(attributes)
+                .build();
+
+    }
+
+    private static OAuth2Attribute ofFacebook(String attributeKey, Map<String, Object> attributes) {
+        Map<String, Object> response = (Map<String, Object>) attributes.get("response");
+
+        return OAuth2Attribute.builder()
+                .name((String) response.get("name"))
+                .email((String) response.get("email"))
+                .attributeKey(attributeKey)
+                .attributes(response)
+                .build();
+    }
 
 
     private static OAuth2Attribute ofNaver(String attributeKey, Map<String, Object> attributes) {
@@ -42,7 +65,7 @@ public class OAuth2Attribute {
     }
 
 
-    private static OAuth2Attribute ofKakao(String userNameAttributeName, Map<String, Object> attributes) {
+    private static OAuth2Attribute ofKakao(String attributeKey, Map<String, Object> attributes) {
         Map<String, Object> kakaoAccount = (Map<String, Object>)attributes.get("kakao_account");
         Map<String, Object> kakaoProfile = (Map<String, Object>)kakaoAccount.get("profile");
 
@@ -51,6 +74,7 @@ public class OAuth2Attribute {
                 .email((String) kakaoAccount.get("email"))
                 .picture((String) kakaoProfile.get("profile_image_url"))
                 .attributes(attributes)
+                .attributeKey(attributeKey)
                 .build();
     }
 
