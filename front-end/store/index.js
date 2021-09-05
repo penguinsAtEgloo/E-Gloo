@@ -30,7 +30,10 @@ for (let i = 1; i <= 100; i++) {
 ingredients[0].imageUrl =
   "https://images-na.ssl-images-amazon.com/images/I/71S6oQqVa5L._SL1500_.jpg";
 
+const recentSearched = [];
+
 export const state = () => ({
+  recentSearched
   //recipes: recipes,
   //ingredients: ingredients
 });

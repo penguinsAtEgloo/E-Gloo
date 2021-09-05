@@ -1,5 +1,6 @@
 <template>
   <div>
+    <search-bar></search-bar>
     <nuxt-link to="/recipes">Button</nuxt-link>
     <nuxt-link to="/ingredients">Button2</nuxt-link>
     <login v-if="!isAuthenticated"></login>
@@ -10,6 +11,7 @@
 <script>
 import Profile from "./profile";
 import Login from "./login";
+import SearchBar from "@/components/SearchBar";
 import { mapGetters } from "vuex";
 
 export default {
@@ -18,7 +20,8 @@ export default {
   },
   components: {
     Login,
-    Profile
+    Profile,
+    SearchBar
   },
   computed: {
     ...mapGetters(["isAuthenticated"])
