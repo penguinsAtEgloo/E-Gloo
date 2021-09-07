@@ -18,7 +18,7 @@ public enum Social {
 
     public static Social of(String value){
         return Arrays.stream(Social.values())
-                    .filter(it -> it.value == value)
+                    .filter(it -> it.value.equals(value))
                     .findFirst().orElse(null);
     }
 }
