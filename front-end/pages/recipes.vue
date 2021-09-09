@@ -100,7 +100,7 @@ import InfiniteLoading from "vue-infinite-loading";
 export default {
   components: {
     RecipesGrid,
-    InfiniteLoading,
+    InfiniteLoading
   },
   async asyncData({ route, store }) {
     const { query } = route;
@@ -125,7 +125,7 @@ export default {
       //페이징 처리를 위한 local state
       recipesCookableOffset: 0,
       recipesRecommendedOffset: 0,
-      limit: 20,
+      limit: 20
     };
   },
 
@@ -138,7 +138,7 @@ export default {
       "recipeBookmarks",
       "recommendTime",
       "recommendKind",
-      "recommendTheme",
+      "recommendTheme"
     ]),
     recommend() {
       const arr = [];
@@ -152,7 +152,7 @@ export default {
         if (this.recommendTheme[c]) arr.push(c);
       }
       return arr.join(",");
-    },
+    }
   },
   methods: {
     infiniteHandler($state) {
@@ -187,8 +187,8 @@ export default {
         { theme, bool },
         { root: true }
       );
-    },
-  },
+    }
+  }
 };
 </script>
 
