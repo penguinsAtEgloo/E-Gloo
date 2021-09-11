@@ -55,32 +55,32 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
                 .exceptionHandling()
-                .authenticationEntryPoint(jwtAuthenticationEntryPoint)
-                .accessDeniedHandler(jwtAccessDeniedHandler)
+            .authenticationEntryPoint(jwtAuthenticationEntryPoint)
+            .accessDeniedHandler(jwtAccessDeniedHandler)
 
-                // enable h2-console
-                .and()
-                .headers()
-                .frameOptions()
-                .sameOrigin()
+            // enable h2-console
+            .and()
+            .headers()
+            .frameOptions()
+            .sameOrigin()
 
-                // 세션을 사용하지 않기 때문에 STATELESS로 설정
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            // 세션을 사용하지 않기 때문에 STATELESS로 설정
+            .and()
+            .sessionManagement()
+            .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+            .and()
+            .authorizeRequests()
+            //user
+            .antMatchers("/auth/login").permitAll()
+            .antMatchers("/user/signup").permitAll()
+            //recipe
+            .antMatchers("/api/v1/recipes").permitAll()
+            .anyRequest().authenticated()
+            //ingredient
+            .and()
+            .apply(new JwtSecurityConfig(tokenProvider))
 
-                .and()
-                .authorizeRequests()
-                //user
-                .antMatchers("/auth/login").permitAll()
-                .antMatchers("/user/signup").permitAll()
-                //recipe
-                .antMatchers("/api/v1/recipes").permitAll()
-                //ingredient
-                .and()
-                .apply(new JwtSecurityConfig(tokenProvider))
-
-                .and().oauth2Login().userInfoEndpoint().userService(oAuth2UserService);
+            .and().oauth2Login().userInfoEndpoint().userService(oAuth2UserService);
     }
 
 }

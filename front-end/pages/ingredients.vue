@@ -1,75 +1,136 @@
 <template>
   <div>
-    <div class="wrap">
-      <div class="tabs">
-        <TabItem
-          v-for="item in list"
-          v-bind="item"
-          :key="item.id"
-          v-model="currentId"
-        />
-      </div>
-    </div>
-    <div class="contents">
-      <section :key="currentId">
-        <grid
-          v-if="current.content == 'ingredients'"
-          :component="ingredient"
-          :list="ingredients"
-          :size="4"
-          :columnGap="2"
-          :rowGap="0.5"
-          :margin="2"
-        />
-        <span v-if="current.content != 'ingredients'">{{
-          current.content
-        }}</span>
-      </section>
-    </div>
+    <v-container style="width: 400px">
+      <div class="ingredientsPageHeader">내 재료</div>
+      <v-row>
+        <v-tabs fixed-tabs style="color: #e57979">
+          <v-tab
+            v-for="{ category } in ingredients"
+            v-bind:key="category"
+            class="ingredientsTabs"
+            >{{ category }}</v-tab
+          >
+          <v-tab-item
+            v-for="{ category, content } in ingredients"
+            v-bind:key="category"
+          >
+            <IngredientsGrid
+              :category="category"
+              :ingredients="content"
+              :selectedIngredients="selectedIngredients"
+            ></IngredientsGrid>
+          </v-tab-item>
+        </v-tabs>
+      </v-row>
+      <v-row>
+        <v-col cols="3"></v-col>
+        <v-col
+          cols="6"
+          @click="updateIngredients()"
+          class="ingredientsNextButton"
+          >계속하기</v-col
+        >
+        <v-col cols="3"></v-col>
+      </v-row>
+      <v-row data-app>
+        <v-dialog v-model="dialog" max-width="290">
+          <v-card>
+            <v-card-title class="text-h5"> 알림 </v-card-title>
+
+            <v-card-text>
+              식재료를 등록하지 않으면 나중에 레시피를 추천 받을 수 없어요. 정말
+              나중에 등록 할까요?
+            </v-card-text>
+
+            <v-card-actions>
+              <v-spacer></v-spacer>
+              <v-btn text @click="dialog = false"> 지금 할게요 </v-btn>
+              <v-btn text @click="dialog = false"> 네, 나중에 할래요. </v-btn>
+            </v-card-actions>
+          </v-card>
+        </v-dialog>
+      </v-row>
+    </v-container>
   </div>
 </template>
+
 <script>
-import TabItem from "~/components/TabItem";
-import ingredient from "~/components/Ingredient";
-import Grid from "~/components/Grid";
-import { mapState } from "vuex";
+import { mapGetters, mapState } from "vuex";
+import IngredientsGrid from "@/components/IngredientsGrid";
 
 export default {
-  components: { TabItem, ingredient, Grid },
+  components: {
+    IngredientsGrid,
+  },
+  async asyncData({ route, store }) {
+    const { query } = route;
+    await store.dispatch("ingredients/getIngredients", {}, { root: true });
+  },
   data() {
     return {
-      list: [
-        { id: 1, label: "쌀/잡곡", content: "ingredients" },
-        { id: 2, label: "과일", content: "item2" },
-        { id: 3, label: "채소", content: "item3" },
-        { id: 4, label: "정육/계란", content: "item4" },
-        { id: 5, label: "우유/유제품", content: "item5" }
-      ],
-      currentId: 1,
-      ingredient
+      dialog: false,
     };
   },
+  props: {},
   computed: {
-    current() {
-      return this.list.find(el => el.id === this.currentId) || {};
+    ...mapGetters(["isAuthenticated", "loggedInUser"]),
+    ...mapState("ingredients", ["ingredients", "selectedIngredients"]),
+  },
+  methods: {
+    async updateIngredients() {
+      if (this.selectedIngredients.length === 0) this.dialog = true;
+
+      await this.$store.dispatch(
+        "ingredients/updateIngredients",
+        {},
+        { root: true }
+      );
     },
-    ...mapState(["ingredients"])
-  }
+  },
 };
 </script>
 
 <style scoped>
-.wrap {
-  border-bottom: 0.06rem solid #e0e0e0;
-  margin-bottom: 0.56rem;
+.ingredientsPageHeader {
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 20px;
+  line-height: 29px;
+  height: 60px;
+  padding-top: 10px;
+  text-align: center;
+
+  color: #4f4f4f;
 }
-.tabs {
-  margin: 0 1.63rem -0.06rem 1.63rem;
-  display: flex;
-  justify-content: stretch;
+.ingredientsTabs {
+  font-family: Noto Sans KR;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 17px;
+  padding: 0px;
+  min-width: 60px;
+
+  text-align: center;
+  color: #b9b9b9;
 }
-.contents {
-  position: relative;
-  overflow: scroll;
+.ingredientsNextButton {
+  padding-top: 17.5px;
+  padding-bottom: 17.5px;
+
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 15px;
+  line-height: 100%;
+
+  text-align: center;
+  letter-spacing: 1.25px;
+  text-transform: uppercase;
+  border-radius: 30px;
+
+  background-color: #f98888;
+  color: #fafafc;
 }
 </style>
