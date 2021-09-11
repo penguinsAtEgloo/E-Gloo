@@ -4,6 +4,7 @@ import com.project.egloo.common.ColumnDescription;
 import lombok.*;
 import org.hibernate.annotations.DynamicInsert;
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.annotations.Type;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -25,17 +26,21 @@ public class Member {
     @Id
     @GeneratedValue(generator = "uuid2")
     @GenericGenerator(name = "uuid2", strategy = "uuid2")
-    @Column(columnDefinition = "VARCHAR")
+    @Column(columnDefinition = "varchar(255)")
+    @Type(type = "uuid-char")
     @ColumnDescription("PK")
     private UUID id;
-    
+
     @Column(unique = true)
     @ColumnDescription("유저 아이디")
     private String userId;
-    
+
     @ColumnDescription("유저 이름")
     private String name;
 
+    // {영문 숫자, 대문자},{영문 숫자, 특수문자} 조합을 사용합니다.
+    @Length(min = 8, max = 20)
+    @Pattern(regexp = "^((?=.*[a-z0-9])(?=.*[A-Z]).{8,20})|((?=.*[a-z0-9])(?=.*[^a-zA-Z0-9가-힣]).{8,20})$")
     @ColumnDescription("비밀번호")
     private String password;
 

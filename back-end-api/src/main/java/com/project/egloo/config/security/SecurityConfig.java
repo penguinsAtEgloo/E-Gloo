@@ -4,6 +4,7 @@ import com.project.egloo.config.jwt.JwtAccessDeniedHandler;
 import com.project.egloo.config.jwt.JwtAuthenticationEntryPoint;
 import com.project.egloo.config.jwt.JwtSecurityConfig;
 import com.project.egloo.config.jwt.TokenProvider;
+import com.project.egloo.member.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
@@ -25,6 +26,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
+    private final CustomOAuth2UserService oAuth2UserService;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
@@ -39,6 +41,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                         , "/favicon.ico"
                         , "/error", "/v2/api-docs", "/swagger-resources/**",
                         "/swagger-ui.html", "/webjars/**", "/swagger/**"
+
+
                 );
     }
 
@@ -64,7 +68,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .sessionManagement()
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-
             .and()
             .authorizeRequests()
             //user
@@ -72,10 +75,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/user/signup").permitAll()
             //recipe
             .antMatchers("/api/v1/recipes").permitAll()
-                .anyRequest().authenticated()
-                //ingredient
-                .and()
-                .apply(new JwtSecurityConfig(tokenProvider));
+            .anyRequest().authenticated()
+            //ingredient
+            .and()
+            .apply(new JwtSecurityConfig(tokenProvider))
+
+            .and().oauth2Login().userInfoEndpoint().userService(oAuth2UserService);
     }
 
 }

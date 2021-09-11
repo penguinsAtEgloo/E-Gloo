@@ -23,6 +23,7 @@ dependencies {
     val springfoxSwagger = "2.9.2"
     val modelMapper = "2.4.4"
 
+    implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
     implementation("org.springframework.boot:spring-boot-starter-security")
     implementation("org.springframework.boot:spring-boot-starter-validation")
