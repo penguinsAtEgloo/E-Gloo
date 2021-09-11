@@ -1,5 +1,6 @@
 package com.project.egloo.member.service;
 
+import com.project.egloo.member.domain.Social;
 import lombok.*;
 
 import java.util.HashMap;
@@ -16,14 +17,15 @@ public class OAuth2Attribute {
     private String picture;
 
     static OAuth2Attribute of(String provider, String attributeKey, Map<String, Object> attributes) {
-        switch (provider) {
-            case "naver":
+        Social social = Social.of(provider);
+        switch (social) {
+            case NAVER:
                 return ofNaver("id", attributes);
-            case "kakao":
+            case KAKAO:
                 return ofKakao("id", attributes);
-            case "facebook":
+            case FACEBOOK:
                 return ofFacebook("id", attributes);
-            case "google":
+            case GOOGLE:
                 return ofGoogle("id", attributes);
             default:
                 throw new RuntimeException();
