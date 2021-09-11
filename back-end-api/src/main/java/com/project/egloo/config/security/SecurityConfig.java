@@ -75,9 +75,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/auth/login").permitAll()
                 .antMatchers("/user/signup").permitAll()
                 //recipe
-                .antMatchers("/recipe/getRecipeByIngredients").permitAll()
-                .antMatchers("/social/**").permitAll()
-                .anyRequest().authenticated()
+                .antMatchers("/api/v1/recipes").permitAll()
                 //ingredient
                 .and()
                 .apply(new JwtSecurityConfig(tokenProvider))
