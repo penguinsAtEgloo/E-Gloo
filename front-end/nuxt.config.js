@@ -44,7 +44,14 @@ export default {
   },
 
   axios: {
-    baseURL: "http://localhost:8080"
+    proxy: true
+  },
+  proxy: {
+    "/api": {
+      target: "http://localhost:8080",
+      pathRewrite: { "^/api": "" }
+    },
+    changeOrigin: true
   },
 
   auth: {
@@ -68,14 +75,14 @@ export default {
         },
         endpoints: {
           login: {
-            url: "/auth/login",
+            url: "/api/auth/login",
             method: "post",
             headers: {
-              "Content-Type": "application/x-www-form-urlencoded"
+              "Content-Type": "application/json"
             },
-            propertyName: "access_token"
+            propertyName: "token"
           },
-          user: { url: "/auth/user", method: "post", propertyName: "user" },
+          user: { url: "/api/auth/user", method: "post", propertyName: "user" },
           logout: false
         }
       }
