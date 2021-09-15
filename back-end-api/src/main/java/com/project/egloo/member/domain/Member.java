@@ -9,8 +9,6 @@ import org.hibernate.validator.constraints.Length;
 import org.springframework.security.core.GrantedAuthority;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.util.Collection;
 import java.util.UUID;
@@ -40,6 +38,7 @@ public class Member {
 
     // {영문 숫자, 대문자},{영문 숫자, 특수문자} 조합을 사용합니다.
     @Length(min = 8, max = 20)
+    @Column(columnDefinition = "varchar(255)")
     @Pattern(regexp = "^((?=.*[a-z0-9])(?=.*[A-Z]).{8,20})|((?=.*[a-z0-9])(?=.*[^a-zA-Z0-9가-힣]).{8,20})$")
     @ColumnDescription("비밀번호")
     private String password;
