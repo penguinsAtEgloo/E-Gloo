@@ -10,7 +10,7 @@
         <form method="post" @submit.prevent="login">
           <general-input
             name="이메일"
-            v-model="loginData.email"
+            v-model="loginData.userEmail"
             rules="required"
             classIn="input"
           />
@@ -57,7 +57,7 @@ export default {
   data() {
     return {
       loginData: {
-        email: "",
+        userEmail: "",
         password: ""
       },
       error: null,

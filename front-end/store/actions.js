@@ -1,7 +1,7 @@
 import qs from "qs";
 
 export const login = async function({ commit }, { data }) {
-  data = qs.stringify(data);
+  // data = qs.stringify(data);
   await this.$auth
     .loginWith("local", {
       data
