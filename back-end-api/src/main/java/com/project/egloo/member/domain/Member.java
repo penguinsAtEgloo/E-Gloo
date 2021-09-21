@@ -80,7 +80,7 @@ public class Member {
         this.role = role;
     }
 
-    public String roleName(){
+    public String roleName() {
         return role.name();
     }
 

@@ -12,13 +12,14 @@ public enum Social {
     KAKAO("kakao"),
     FACEBOOK("facebook"),
     NAVER("naver"),
-    GOOGLE("google"),;
+    GOOGLE("google"),
+    ;
 
     private final String value;
 
-    public static Social of(String value){
+    public static Social of(String value) {
         return Arrays.stream(Social.values())
-                    .filter(it -> it.value.equals(value))
-                    .findFirst().orElse(null);
+            .filter(it -> it.value.equals(value))
+            .findFirst().orElse(null);
     }
 }
