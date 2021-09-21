@@ -28,16 +28,16 @@ public class MemberService {
         if (errors.hasErrors()) {
             throw new Exception();
         }
-        memberRepository.findByUserId(signUpRequest.getUserId()).orElseThrow(()->new AuthException(ErrorCode.DUPLICATED_ID));
-        memberRepository.findByEmail(signUpRequest.getEmail()).orElseThrow(()->new AuthException(ErrorCode.DUPLICATED_EMAIL));
+        memberRepository.findByUserId(signUpRequest.getUserId()).orElseThrow(() -> new AuthException(ErrorCode.DUPLICATED_ID));
+        memberRepository.findByEmail(signUpRequest.getEmail()).orElseThrow(() -> new AuthException(ErrorCode.DUPLICATED_EMAIL));
 
         Member member = Member.builder()
-                .email(signUpRequest.getEmail())
-                .password(signUpRequest.getPassword())
-                .role(MemberRole.ROLE_USER)
-                .social(Social.LOCAL)
-                .address(signUpRequest.getAddress())
-                .build();
+            .email(signUpRequest.getEmail())
+            .password(signUpRequest.getPassword())
+            .role(MemberRole.ROLE_USER)
+            .social(Social.LOCAL)
+            .address(signUpRequest.getAddress())
+            .build();
 
 
         member.setPassword(passwordEncoder.encode(member.getPassword()));

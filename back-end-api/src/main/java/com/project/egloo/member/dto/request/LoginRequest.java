@@ -14,10 +14,11 @@ import javax.validation.constraints.Pattern;
 @AllArgsConstructor
 @NoArgsConstructor
 public class LoginRequest {
-    @NotNull @Email
+    @NotNull
+    @Email
     private String userEmail;
 
     @NotNull
-    @Pattern(regexp="^((?=.*[a-z0-9])(?=.*[A-Z]).{8,20})|((?=.*[a-z0-9])(?=.*[^a-zA-Z0-9가-힣]).{8,20})$")
+    @Pattern(regexp = "^((?=.*[a-z0-9])(?=.*[A-Z]).{8,20})|((?=.*[a-z0-9])(?=.*[^a-zA-Z0-9가-힣]).{8,20})$")
     private String password;
 }

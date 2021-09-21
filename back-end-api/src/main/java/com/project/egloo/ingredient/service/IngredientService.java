@@ -18,7 +18,7 @@ public class IngredientService {
     private final UserIngredientRepository userIngredientRepository;
     private final IngredientRepository ingredientRepository;
 
-    public List<Ingredient> userIngredient(UUID userId){
+    public List<Ingredient> userIngredient(UUID userId) {
         List<Long> ingredientsIds = userIngredientRepository.findByUserId(userId).stream().map(UserIngredient::getIngredientId).collect(Collectors.toList());
         return ingredientRepository.findAllById(ingredientsIds);
     }

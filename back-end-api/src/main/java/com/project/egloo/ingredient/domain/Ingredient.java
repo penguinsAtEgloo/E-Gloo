@@ -21,9 +21,10 @@ import java.util.List;
 @DynamicInsert
 public class Ingredient {
 
-    @Id @GeneratedValue
+    @Id
+    @GeneratedValue
     @ColumnDescription("PK")
-    private Long    id;
+    private Long id;
 
     @ColumnDescription("재료명")
     private String name;

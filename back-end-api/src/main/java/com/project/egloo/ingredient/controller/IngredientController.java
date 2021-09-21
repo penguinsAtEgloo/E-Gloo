@@ -1,7 +1,5 @@
 package com.project.egloo.ingredient.controller;
 
-import com.project.egloo.common.ResponseEntityObject;
-import com.project.egloo.common.exceptions.ErrorCode;
 import com.project.egloo.ingredient.domain.Ingredient;
 import com.project.egloo.ingredient.service.IngredientService;
 import lombok.RequiredArgsConstructor;
@@ -21,7 +19,7 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     @GetMapping("/getIngredient")
-    public ResponseEntity<List<Ingredient>> selectUserIngredient(String userId){
+    public ResponseEntity<List<Ingredient>> selectUserIngredient(String userId) {
         List<Ingredient> ingredients = ingredientService.userIngredient(UUID.fromString(userId));
         return ResponseEntity.ok(ingredients);
     }

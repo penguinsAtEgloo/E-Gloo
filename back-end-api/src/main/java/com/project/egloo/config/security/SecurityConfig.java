@@ -36,25 +36,25 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     public void configure(WebSecurity web) {
         web.ignoring()
-                .antMatchers(
-                        "/h2-console/**"
-                        , "/favicon.ico"
-                        , "/error", "/v2/api-docs", "/swagger-resources/**",
-                        "/swagger-ui.html", "/webjars/**", "/swagger/**"
+            .antMatchers(
+                "/h2-console/**"
+                , "/favicon.ico"
+                , "/error", "/v2/api-docs", "/swagger-resources/**",
+                "/swagger-ui.html", "/webjars/**", "/swagger/**"
 
 
-                );
+            );
     }
 
     @Override
     protected void configure(HttpSecurity httpSecurity) throws Exception {
         httpSecurity
-                // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
-                .csrf().disable()
+            // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
+            .csrf().disable()
 
-                .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
-                .exceptionHandling()
+            .exceptionHandling()
             .authenticationEntryPoint(jwtAuthenticationEntryPoint)
             .accessDeniedHandler(jwtAccessDeniedHandler)
 

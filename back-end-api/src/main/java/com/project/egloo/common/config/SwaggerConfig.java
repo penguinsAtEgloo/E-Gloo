@@ -20,13 +20,13 @@ public class SwaggerConfig {
     @Bean
     public Docket api() {
         return new Docket(DocumentationType.SWAGGER_2)
-                .consumes(getConsumeContentTypes())
-                .produces(getProduceContentTypes())
-                .apiInfo(this.apiInfo())
-                .select()
-                .apis(RequestHandlerSelectors.basePackage("org.springframework.boot"))
-                .paths(PathSelectors.any())
-                .build();
+            .consumes(getConsumeContentTypes())
+            .produces(getProduceContentTypes())
+            .apiInfo(this.apiInfo())
+            .select()
+            .apis(RequestHandlerSelectors.basePackage("org.springframework.boot"))
+            .paths(PathSelectors.any())
+            .build();
     }
 
     private Set<String> getConsumeContentTypes() {
@@ -44,10 +44,10 @@ public class SwaggerConfig {
 
     private ApiInfo apiInfo() {
         return new ApiInfoBuilder()
-                .title("Egloo API Document")
-                .description("[Egloo] REST API")
-                .contact(new Contact("[Egloo Swagger]", "https://github.com/penguinsAtEgloo/E-Gloo", "helloegloo@gmail.com"))
-                .version("0.1.0")
-                .build();
+            .title("Egloo API Document")
+            .description("[Egloo] REST API")
+            .contact(new Contact("[Egloo Swagger]", "https://github.com/penguinsAtEgloo/E-Gloo", "helloegloo@gmail.com"))
+            .version("0.1.0")
+            .build();
     }
 }
