@@ -8,13 +8,14 @@
         cols="6"
         style="padding: 4px"
       >
+        <br />
+
         <v-img
           :src="recipe.recipeImage"
           :lazy-src="recipe.recipeImage"
           aspect-ratio="1"
           class="profile_image"
           position="left"
-          @click.self="console.log('hh')"
         >
           <v-icon
             v-if="!bookmarks.includes(recipe.recipeId)"
@@ -39,32 +40,14 @@
             </v-row>
           </template>
         </v-img>
+        <span class="reviewWriter">mh9406</span>
+        <br />
         <router-link
-          :to="{ path: '/recipes/' + recipe.recipeId }"
+          :to="{ path: '/reviews/' + recipe.recipeId }"
           style="text-decoration: none; color: inherit"
-        >
-          <span class="recipesInfo">{{ recipe.recipeName }}</span>
-        </router-link>
-        <span class="recipesHead">
-          <v-icon size="10">mdi-signal-cellular-outline</v-icon>
-          {{ recipe.recipeLevel }}&nbsp;
-          <v-icon size="10">mdi-clock-outline</v-icon>
-          {{ recipe.recipeCookTime }}분</span
+          ><span class="recipeName">{{ recipe.recipeName }}</span></router-link
         >
         <br />
-        <span class="recipesInfo"
-          >예상비용 :&nbsp;{{ recipe.recipeBudget }}원~</span
-        >
-        <br />
-        <p style="word-break: keep-all">
-          <span
-            class="recipesIngredients"
-            v-for="ingredient in recipe.ingredients"
-            :key="ingredient"
-          >
-            {{ ingredient }}
-          </span>
-        </p>
       </v-col>
     </v-row>
   </v-container>
@@ -118,38 +101,25 @@ export default {
 
   color: #e57979;
 }
-.recipesInfo {
+.reviewWriter {
+  font-family: Mulish;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 10px;
+  line-height: 120%;
+
+  text-align: center;
+  letter-spacing: 0.15px;
+
+  color: #4f4f4f;
+}
+.recipeName {
   font-family: Noto Sans KR;
   font-style: normal;
-  font-weight: 500;
+  font-weight: normal;
   font-size: 10px;
   line-height: 14px;
 
   color: #4e4e4e;
-}
-
-.recipesHead {
-  font-family: Noto Sans KR;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 9px;
-  line-height: 13px;
-
-  color: #8c8585;
-}
-
-.recipesIngredients {
-  font-family: Noto Sans KR;
-  font-style: normal;
-  font-weight: normal;
-  font-size: 9px;
-  line-height: 13px;
-
-  border: 1px solid;
-  border-radius: 5px;
-  padding: 3px;
-  margin-right: 3px;
-
-  color: #f98888;
 }
 </style>
