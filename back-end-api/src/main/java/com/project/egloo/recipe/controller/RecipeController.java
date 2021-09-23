@@ -1,7 +1,5 @@
 package com.project.egloo.recipe.controller;
 
-import com.project.egloo.common.ResponseEntityObject;
-import com.project.egloo.common.exceptions.ErrorCode;
 import com.project.egloo.recipe.dto.CreateRecipeDTO;
 import com.project.egloo.recipe.dto.DeleteResultDTO;
 import com.project.egloo.recipe.dto.PatchRecipeDTO;
@@ -22,9 +20,12 @@ public class RecipeController {
 
     private final RecipeService recipeService;
 
-    @GetMapping("/getRecipeByIngredients")
-    public ResponseEntityObject recipeByIngredients(@RequestParam List<String> ingredients) {
-        return new ResponseEntityObject(ErrorCode.SUCCESS.getCode(), recipeService.getRecipeByIngredients(ingredients).toString(), "");
+    @GetMapping("/api/v1/recipes")
+    public ResponseEntity<String> recipeByIngredients(
+        @RequestParam List<String> ingredients
+    ) {
+        String msg = recipeService.getRecipeByIngredients(ingredients).toString();
+        return ResponseEntity.ok(msg);
     }
 
     @PostMapping("/api/v1/recipes")
