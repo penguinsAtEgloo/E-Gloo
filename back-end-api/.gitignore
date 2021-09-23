@@ -167,4 +167,7 @@ build/
 # ignore spring application configuration
 application.yml
 
+# ignore logs
+logs/
+
 # End of https://www.toptal.com/developers/gitignore/api/intellij+all,eclipse
