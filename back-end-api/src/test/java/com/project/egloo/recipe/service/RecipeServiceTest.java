@@ -4,6 +4,7 @@ import com.project.egloo.recipe.domain.Category;
 import com.project.egloo.recipe.domain.Difficulty;
 import com.project.egloo.recipe.domain.Recipe;
 import com.project.egloo.recipe.dto.CreateRecipeDTO;
+import com.project.egloo.recipe.dto.PatchRecipeDTO;
 import com.project.egloo.recipe.dto.RecipeDTO;
 import com.project.egloo.recipe.exception.CategoryNotFoundException;
 import com.project.egloo.recipe.repository.CategoryRepository;
@@ -130,5 +131,36 @@ class RecipeServiceTest {
 
         // then
         assertThat(recipeService.deleteRecipe(1L)).isEqualTo(true);
+    }
+
+    @Test
+    public void updateRecipeTest() {
+        // given
+        Category category = new Category("국");
+        category.setId(1L);
+
+        Recipe recipe = new Recipe(
+            category,
+            "소고기 미역국 레시피",
+            "소고기 미역국 레시피 입니다.",
+            Difficulty.MIDDLE,
+            "https://image.com/recipe1.jpg",
+            6000
+        );
+        recipe.setId(1L);
+
+        PatchRecipeDTO patchRecipe = new PatchRecipeDTO();
+        patchRecipe.setDifficulty(Difficulty.HIGH);
+        patchRecipe.setSummary("백종원 미역국 레시피 입니다");
+
+        // when
+        when(recipeRepository.findById(1L)).thenReturn(Optional.of(recipe));
+        when(recipeRepository.save(any(Recipe.class))).thenReturn(recipe);
+
+        RecipeDTO updatedRecipe = recipeService.updateRecipe(1L, patchRecipe);
+
+        // then
+        assertThat(updatedRecipe.getDifficulty()).isEqualTo(Difficulty.HIGH);
+        assertThat(updatedRecipe.getSummary()).isEqualTo("백종원 미역국 레시피 입니다");
     }
 }
