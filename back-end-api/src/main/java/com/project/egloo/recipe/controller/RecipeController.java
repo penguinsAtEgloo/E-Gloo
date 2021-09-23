@@ -4,6 +4,7 @@ import com.project.egloo.common.ResponseEntityObject;
 import com.project.egloo.common.exceptions.ErrorCode;
 import com.project.egloo.recipe.dto.CreateRecipeDTO;
 import com.project.egloo.recipe.dto.DeleteResultDTO;
+import com.project.egloo.recipe.dto.PatchRecipeDTO;
 import com.project.egloo.recipe.dto.RecipeDTO;
 import com.project.egloo.recipe.service.RecipeService;
 import lombok.RequiredArgsConstructor;
@@ -33,6 +34,16 @@ public class RecipeController {
         RecipeDTO recipe = recipeService.createRecipe(recipeInfo);
 
         return ResponseEntity.ok(recipe);
+    }
+
+    @PatchMapping("/api/v1/recipes/{recipeId}")
+    public ResponseEntity<RecipeDTO> updateRecipe(
+        @RequestBody PatchRecipeDTO patchRecipe,
+        @PathVariable Long recipeId
+    ) {
+        RecipeDTO updatedRecipe = recipeService.updateRecipe(recipeId, patchRecipe);
+
+        return ResponseEntity.ok(updatedRecipe);
     }
 
     @DeleteMapping("/api/v1/recipes/{recipeId}")
