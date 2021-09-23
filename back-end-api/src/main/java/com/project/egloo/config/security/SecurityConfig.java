@@ -7,6 +7,7 @@ import com.project.egloo.config.jwt.TokenProvider;
 import com.project.egloo.member.service.CustomOAuth2UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
@@ -75,6 +76,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .antMatchers("/user/signup").permitAll()
             //recipe
             .antMatchers("/api/v1/recipes").permitAll()
+            .antMatchers(HttpMethod.DELETE, "/api/v1/recipes/*").hasAuthority("ADMIN")
             .anyRequest().authenticated()
             //ingredient
             .and()
