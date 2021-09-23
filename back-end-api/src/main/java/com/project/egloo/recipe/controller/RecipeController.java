@@ -3,6 +3,7 @@ package com.project.egloo.recipe.controller;
 import com.project.egloo.common.ResponseEntityObject;
 import com.project.egloo.common.exceptions.ErrorCode;
 import com.project.egloo.recipe.dto.CreateRecipeDTO;
+import com.project.egloo.recipe.dto.DeleteResultDTO;
 import com.project.egloo.recipe.dto.RecipeDTO;
 import com.project.egloo.recipe.service.RecipeService;
 import lombok.RequiredArgsConstructor;
@@ -32,5 +33,14 @@ public class RecipeController {
         RecipeDTO recipe = recipeService.createRecipe(recipeInfo);
 
         return ResponseEntity.ok(recipe);
+    }
+
+    @DeleteMapping("/api/v1/recipes/{recipeId}")
+    public ResponseEntity<DeleteResultDTO> deleteRecipe(
+        @PathVariable Long recipeId
+    ) {
+        recipeService.deleteRecipe(recipeId);
+
+        return ResponseEntity.ok(new DeleteResultDTO(true));
     }
 }

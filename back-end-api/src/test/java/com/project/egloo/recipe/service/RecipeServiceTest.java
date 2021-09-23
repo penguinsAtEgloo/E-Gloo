@@ -13,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -21,6 +22,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+@Transactional
 @ExtendWith(MockitoExtension.class)
 class RecipeServiceTest {
 
@@ -106,5 +108,27 @@ class RecipeServiceTest {
         assertThatThrownBy(() -> recipeService.createRecipe(createRecipeInfo))
             .isInstanceOf(CategoryNotFoundException.class)
             .hasMessage("No category where name: 국");
+    }
+
+    @Test
+    public void deleteRecipeTest() {
+        // given
+        Category category = new Category("국");
+        category.setId(1L);
+
+        Recipe recipe = new Recipe(
+            category,
+            "소고기 미역국 레시피",
+            "소고기 미역국 레시피 입니다.",
+            Difficulty.MIDDLE,
+            "https://image.com/recipe1.jpg",
+            6000
+        );
+        recipe.setId(1L);
+
+        // when
+
+        // then
+        assertThat(recipeService.deleteRecipe(1L)).isEqualTo(true);
     }
 }

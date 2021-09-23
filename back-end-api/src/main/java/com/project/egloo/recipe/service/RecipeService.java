@@ -14,6 +14,7 @@ import com.project.egloo.recipe.repository.RecipeRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import java.util.stream.Collectors;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class RecipeService {
 
     private final CookingRepository cookingRepository;
@@ -53,6 +55,7 @@ public class RecipeService {
         return intersectionSet;
     }
 
+    @Transactional
     public RecipeDTO createRecipe(CreateRecipeDTO recipeInfo) {
         Category category = categoryRepository.findByName(recipeInfo.getCategoryName())
             .orElseThrow(() -> new CategoryNotFoundException("No category where name: " + recipeInfo.getCategoryName()));
@@ -67,5 +70,12 @@ public class RecipeService {
         );
 
         return recipeRepository.save(recipe).toDTO();
+    }
+
+    @Transactional
+    public Boolean deleteRecipe(Long recipeId) {
+        recipeRepository.deleteById(recipeId);
+
+        return true;
     }
 }
