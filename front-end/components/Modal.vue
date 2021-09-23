@@ -4,24 +4,15 @@
       <div class="modal-wrapper">
         <div class="modal-container">
           <div class="modal-header">
-            <slot name="header">
-              default header
-            </slot>
+            <slot name="header"> </slot>
           </div>
 
           <div class="modal-body">
-            <slot name="body">
-              default body
-            </slot>
+            <slot name="body"> </slot>
           </div>
 
           <div class="modal-footer">
-            <slot name="footer">
-              default footer
-              <button class="modal-default-button" @click="$emit('close')">
-                OK
-              </button>
-            </slot>
+            <slot name="footer"> </slot>
           </div>
         </div>
       </div>

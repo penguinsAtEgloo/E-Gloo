@@ -13,7 +13,9 @@ export default {
     ],
     link: []
   },
-
+  router: {
+    middleware: ["auth"]
+  },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["@/assets/css/common.css", "@/assets/css/transition.css"],
 
@@ -34,57 +36,87 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     "@nuxtjs/axios",
-    "@nuxtjs/auth",
+    "@nuxtjs/auth-next",
     "@nuxtjs/svg"
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ["vee-validate/dist/rules"]
+    transpile: ["vee-validate/dist/rules", "@nuxtjs/auth"]
   },
-
   axios: {
     proxy: true
   },
-  proxy: {
-    "/api": {
-      target: "http://localhost:8080",
-      pathRewrite: { "^/api": "" }
-    },
-    changeOrigin: true
-  },
-
+  proxy: [
+    [
+      "/api",
+      {
+        target: "http://localhost:8080",
+        pathRewrite: { "^/api": "" },
+        changeOrigin: true,
+        secure: process.env.NODE_ENV === "production",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    ]
+  ],
   auth: {
+    redirect: {
+      login: "/login",
+      logout: "/",
+      callback: "/login",
+      home: false
+    },
+    rewriteRedirects: true,
     strategies: {
       local: {
-        scheme: "refresh",
         token: {
-          property: "access_token",
-          maxAge: 1800,
-          global: true
-          // type: "Bearer"
-        },
-        refreshToken: {
-          property: "refresh_token",
-          data: "refresh_token",
-          maxAge: 60 * 60 * 24 * 30
-        },
-        user: {
-          property: "user",
-          autoFetch: true
+          property: "token",
+          global: true,
+          type: "Bearer"
         },
         endpoints: {
           login: {
-            url: "/api/auth/login",
+            url: "/api/api/v1/auth/login",
             method: "post",
-            headers: {
-              "Content-Type": "application/json"
-            },
             propertyName: "token"
           },
-          user: { url: "/api/auth/user", method: "post", propertyName: "user" },
-          logout: false
+          logout: true,
+          user: {
+            url: "/api/api/v1/users/me",
+            method: "post"
+          }
+        },
+        user: {
+          property: "user"
         }
+      },
+      kakao: {
+        scheme: "oauth2",
+        endpoints: {
+          authorization: "/api/oauth2/authorization/kakao",
+          token: "/api/api/v1/auth/login",
+          userInfo: "/api/api/v1/users/me",
+          logout: false
+        },
+        token: {
+          property: "token",
+          type: "Bearer",
+          maxAge: 1800
+        },
+        responseType: "token",
+        grantType: "authorization_code",
+        accessType: undefined,
+        redirectUri: undefined,
+        logoutRedirectUri: undefined,
+        clientId: "SET_ME",
+        scope: ["openid", "profile", "email"],
+        state: "UNIQUE_AND_NON_GUESSABLE",
+        codeChallengeMethod: "",
+        responseMode: "",
+        acrValues: ""
+        // autoLogout: false
       }
     }
   }
