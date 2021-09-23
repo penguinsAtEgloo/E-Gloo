@@ -1,11 +1,5 @@
-import { extend, setInteractionMode } from "vee-validate";
-import {
-  required,
-  max,
-  alpha_dash,
-  confirmed,
-  email
-} from "vee-validate/dist/rules";
+import {extend, setInteractionMode} from "vee-validate";
+import {alpha_dash, confirmed, email, max, required} from "vee-validate/dist/rules";
 import batchimEnding from "@/plugins/batchimEnding";
 
 setInteractionMode("aggressive");

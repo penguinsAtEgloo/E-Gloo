@@ -1,4 +1,4 @@
-import { LoggingService } from "@/services/logging.service";
+import {LoggingService} from "@/services/logging.service";
 
 export default ({ app }, inject) => {
   const allMethods = {
