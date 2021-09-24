@@ -36,7 +36,7 @@ public class CustomOAuth2UserService implements OAuth2UserService<OAuth2UserRequ
         saveUser(registrationId, oAuth2Attribute);
         var memberAttribute = oAuth2Attribute.convertToMap();
 
-        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(MemberRole.ROLE_USER.getRole())), memberAttribute, "email");
+        return new DefaultOAuth2User(Collections.singleton(new SimpleGrantedAuthority(MemberRole.USER.getRole())), memberAttribute, "email");
     }
 
     public void saveUser(String provider, final OAuth2Attribute attributes) {

@@ -19,9 +19,9 @@ repositories {
 }
 
 dependencies {
+    val mapstruct = "1.4.2.Final"
     val openApi = "1.5.10"
     val jsonwebtoken = "0.11.2"
-    val modelMapper = "2.4.4"
 
     implementation("org.springframework.boot:spring-boot-starter-oauth2-client")
     implementation("org.springframework.boot:spring-boot-starter-data-jpa")
@@ -29,8 +29,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     implementation("org.springframework.boot:spring-boot-starter-web")
     implementation("org.springframework.boot:spring-boot-starter-data-redis")
+    implementation("org.mapstruct:mapstruct:$mapstruct")
     implementation("org.springdoc:springdoc-openapi-ui:$openApi")
-    implementation("org.modelmapper:modelmapper:$modelMapper")
     implementation("io.jsonwebtoken:jjwt-api:$jsonwebtoken")
     runtimeOnly("io.jsonwebtoken:jjwt-impl:$jsonwebtoken")
     runtimeOnly("io.jsonwebtoken:jjwt-jackson:$jsonwebtoken")
@@ -38,6 +38,7 @@ dependencies {
     runtimeOnly("mysql:mysql-connector-java")
     compileOnly("org.projectlombok:lombok")
     annotationProcessor("org.projectlombok:lombok")
+    annotationProcessor("org.mapstruct:mapstruct-processor:$mapstruct")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
 }

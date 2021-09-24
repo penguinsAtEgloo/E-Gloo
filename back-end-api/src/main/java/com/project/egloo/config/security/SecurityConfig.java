@@ -68,8 +68,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .authorizeRequests()
             //user
-            .antMatchers("/auth/login").permitAll()
-            .antMatchers("/user/signup").permitAll()
+            .antMatchers("/api/v1/auth/login").permitAll()
+            .antMatchers(HttpMethod.POST, "/api/v1/users/signup").permitAll()
             //recipe
             .antMatchers("/api/v1/recipes").permitAll()
             .antMatchers(HttpMethod.DELETE, "/api/v1/recipes/*").hasAuthority("ADMIN")
