@@ -8,11 +8,17 @@ import com.project.egloo.member.domain.Social;
 import com.project.egloo.member.dto.request.SignUpRequest;
 import com.project.egloo.member.dto.response.SignUpResponse;
 import com.project.egloo.member.repository.MemberRepository;
+import com.project.egloo.member.dto.response.UserProfile;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.JSONObject;
+import net.minidev.json.parser.JSONParser;
+import net.minidev.json.parser.ParseException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.Errors;
+
+import java.util.Base64;
 
 
 @Service
@@ -44,5 +50,24 @@ public class MemberService {
 
         memberRepository.save(member);
         return SignUpResponse.of(member.getId());
+    }
+
+    public UserProfile memberInfo(String token) throws ParseException {
+        String email = tokenDecoder(token);
+        return memberRepository.findMemberByEmail(email).orElseThrow(() -> new AuthException(ErrorCode.ENTITY_NOT_FOUND));
+    }
+
+
+    public String tokenDecoder(String token) throws ParseException{
+        Base64.Decoder decoder = Base64.getDecoder();
+        final String[] splitJwt = token.split("\\.");
+        final String payload = new String(decoder.decode(splitJwt[1].getBytes()));
+
+        JSONParser jsonParser = new JSONParser();
+        //3. To Object
+        Object obj = jsonParser.parse(payload);
+        //4. To JsonObject
+        JSONObject jsonObj = (JSONObject) obj;
+        return jsonObj.get("sub").toString();
     }
 }

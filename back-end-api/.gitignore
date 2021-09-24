@@ -166,7 +166,7 @@ build/
 
 # ignore spring application configuration
 application.yml
-
+application.yaml
 # ignore logs
 logs/
 
