@@ -38,12 +38,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     public void configure(WebSecurity web) {
         web.ignoring()
             .antMatchers(
-                "/h2-console/**"
-                , "/favicon.ico"
-                , "/error", "/v2/api-docs", "/swagger-resources/**",
-                "/swagger-ui.html", "/webjars/**", "/swagger/**"
-
-
+                "/h2-console/**", "/favicon.ico", "/error",
+                "/webjars/**", "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs", "/v3/api-docs/swagger-config"
             );
     }
 
