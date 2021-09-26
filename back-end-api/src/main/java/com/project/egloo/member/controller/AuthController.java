@@ -1,14 +1,20 @@
 package com.project.egloo.member.controller;
 
+import com.project.egloo.common.AuthMember;
 import com.project.egloo.config.jwt.JwtFilter;
 import com.project.egloo.config.jwt.TokenProvider;
+import com.project.egloo.member.domain.Member;
 import com.project.egloo.member.dto.request.LoginRequest;
 import com.project.egloo.member.dto.response.TokenResponse;
+import com.project.egloo.member.dto.response.UserProfileResponse;
+import com.project.egloo.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
+import net.minidev.json.parser.ParseException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
@@ -26,12 +32,13 @@ import javax.validation.Valid;
 public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
+    private final MemberService memberService;
 
     @PostMapping("/login")
     public ResponseEntity<TokenResponse> authorize(@Valid @RequestBody LoginRequest loginDto) {
 
         UsernamePasswordAuthenticationToken authenticationToken =
-            new UsernamePasswordAuthenticationToken(loginDto.getUserEmail(), loginDto.getPassword());
+                new UsernamePasswordAuthenticationToken(loginDto.getUserEmail(), loginDto.getPassword());
 
         Authentication authentication = authenticationManagerBuilder.getObject().authenticate(authenticationToken);
         SecurityContextHolder.getContext().setAuthentication(authentication);
@@ -42,5 +49,12 @@ public class AuthController {
         httpHeaders.add(JwtFilter.AUTHORIZATION_HEADER, "Bearer " + jwt);
 
         return new ResponseEntity<>(new TokenResponse(jwt), httpHeaders, HttpStatus.OK);
+    }
+
+    @PostMapping("/user")
+    @PreAuthorize("isAuthenticated()")
+    public ResponseEntity<UserProfileResponse> memberInfo(@AuthMember Member member) {
+        UserProfileResponse userProfile = memberService.memberInfo(member.getEmail());
+        return ResponseEntity.ok(userProfile);
     }
 }
