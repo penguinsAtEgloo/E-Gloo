@@ -53,7 +53,7 @@ public class AuthController {
 
     @PostMapping("/user")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity memberInfo(@AuthMember Member member) {
+    public ResponseEntity<UserProfileResponse> memberInfo(@AuthMember Member member) {
         UserProfileResponse userProfile = memberService.memberInfo(member.getEmail());
         return ResponseEntity.ok(userProfile);
     }
