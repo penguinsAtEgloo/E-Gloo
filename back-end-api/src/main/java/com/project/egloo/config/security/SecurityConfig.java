@@ -67,6 +67,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
             .and()
             .authorizeRequests()
+
+            // health check
+            .antMatchers(HttpMethod.GET, "/api/v1/healthCheck").permitAll()
+
             //user
             .antMatchers("/auth/login").permitAll()
             .antMatchers("/user/signup").permitAll()
