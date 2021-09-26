@@ -7,8 +7,8 @@ import com.project.egloo.member.domain.MemberRole;
 import com.project.egloo.member.domain.Social;
 import com.project.egloo.member.dto.request.SignUpRequest;
 import com.project.egloo.member.dto.response.SignUpResponse;
+import com.project.egloo.member.dto.response.UserProfileResponse;
 import com.project.egloo.member.repository.MemberRepository;
-import com.project.egloo.member.dto.response.UserProfile;
 import lombok.RequiredArgsConstructor;
 import net.minidev.json.JSONObject;
 import net.minidev.json.parser.JSONParser;
@@ -52,8 +52,7 @@ public class MemberService {
         return SignUpResponse.of(member.getId());
     }
 
-    public UserProfile memberInfo(String token) throws ParseException {
-        String email = tokenDecoder(token);
+    public UserProfileResponse memberInfo(String email) {
         return memberRepository.findMemberByEmail(email).orElseThrow(() -> new AuthException(ErrorCode.ENTITY_NOT_FOUND));
     }
 

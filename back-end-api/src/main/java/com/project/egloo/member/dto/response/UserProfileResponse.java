@@ -8,7 +8,7 @@ import lombok.Getter;
 
 @Getter
 @AllArgsConstructor
-public class UserProfile {
+public class UserProfileResponse {
 
     private String name;
     private Social social;
