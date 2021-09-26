@@ -38,12 +38,12 @@ public class MemberService {
         memberRepository.findByEmail(signUpRequest.getEmail()).orElseThrow(() -> new AuthException(ErrorCode.DUPLICATED_EMAIL));
 
         Member member = Member.builder()
-            .email(signUpRequest.getEmail())
-            .password(signUpRequest.getPassword())
-            .role(MemberRole.ROLE_USER)
-            .social(Social.LOCAL)
-            .address(signUpRequest.getAddress())
-            .build();
+                .email(signUpRequest.getEmail())
+                .password(signUpRequest.getPassword())
+                .role(MemberRole.ROLE_USER)
+                .social(Social.LOCAL)
+                .address(signUpRequest.getAddress())
+                .build();
 
 
         member.setPassword(passwordEncoder.encode(member.getPassword()));
@@ -57,7 +57,7 @@ public class MemberService {
     }
 
 
-    public String tokenDecoder(String token) throws ParseException{
+    public String tokenDecoder(String token) throws ParseException {
         Base64.Decoder decoder = Base64.getDecoder();
         final String[] splitJwt = token.split("\\.");
         final String payload = new String(decoder.decode(splitJwt[1].getBytes()));
