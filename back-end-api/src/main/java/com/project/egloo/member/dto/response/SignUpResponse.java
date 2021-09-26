@@ -11,8 +11,4 @@ import java.util.UUID;
 public class SignUpResponse {
 
     private UUID uuid;
-
-    public static SignUpResponse of(UUID id) {
-        return new SignUpResponse(id);
-    }
 }

@@ -6,10 +6,9 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import org.hibernate.validator.constraints.Length;
 
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
 @Getter
@@ -24,17 +23,17 @@ public class SignUpRequest {
 
     @NotBlank
     @Length(min = 8, max = 20)
+    // 영문 소문자 숫자 + 영어 대문자 OR 영문 소문자 숫자 + 특수문자
     @Pattern(regexp = "^((?=.*[a-z0-9])(?=.*[A-Z]).{8,20})|((?=.*[a-z0-9])(?=.*[^a-zA-Z0-9가-힣]).{8,20})$")
     private String password;
 
-    @NotBlank
-    @Enumerated(EnumType.STRING)
+    @NotNull
     private Social social;
 
     @NotBlank
     private String phoneNo;
 
-    @NotBlank
+    @NotNull
     private Gender gender;
 
     @Email

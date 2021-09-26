@@ -1,28 +1,37 @@
 package com.project.egloo.member.controller;
 
 import com.project.egloo.member.dto.request.SignUpRequest;
+import com.project.egloo.member.dto.response.MemberDTO;
 import com.project.egloo.member.dto.response.SignUpResponse;
 import com.project.egloo.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
-
-import javax.validation.Valid;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/user", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
 public class MemberController {
 
     private final MemberService memberService;
 
-    @PostMapping("/signup")
+    @PostMapping("/api/v1/users/signup")
     @PreAuthorize("isAnonymous()")
-    public ResponseEntity<SignUpResponse> memberSignUp(@Valid SignUpRequest signUpRequest, Errors errors) throws Exception {
-        SignUpResponse signUpResponse = memberService.memberSignUP(signUpRequest, errors);
+    public ResponseEntity<SignUpResponse> memberSignUp(
+        @Validated @RequestBody SignUpRequest signUpRequest
+    ) {
+        memberService.throwIfUserInfoNotUnique(signUpRequest.getUserId(), signUpRequest.getEmail());
+
+        MemberDTO member = memberService.memberSignUP(signUpRequest);
+
+        SignUpResponse signUpResponse = new SignUpResponse(member.getId());
+
         return ResponseEntity.ok(signUpResponse);
     }
 
