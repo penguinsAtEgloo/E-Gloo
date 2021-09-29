@@ -7,6 +7,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      working-directory: ./back-end-api
     steps:
 
       - name: Checkout source code
