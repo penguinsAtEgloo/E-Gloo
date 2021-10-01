@@ -9,8 +9,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       working-directory: ./back-end-api
-    steps:
 
+    steps:
       - name: Checkout source code
         uses: actions/checkout@v2
 
@@ -22,6 +22,7 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x ./gradlew
         shell: bash
+        working-directory: ${{ env.working-directory }}
 
       - name: Cache Gradle packages
         uses: actions/cache@v2
@@ -33,6 +34,7 @@ jobs:
       - name: Build with Gradle
         run: ./gradlew clean build -x=jar -x=war
         shell: bash
+        working-directory: ${{ env.working-directory }}
 
       - name: Get current time
         uses: 1466587594/get-current-time@v2
@@ -69,7 +71,7 @@ jobs:
       - name: Notify slack fail
         if: failure()
         env:
-          SLACK_BOT_TOKEN: ${{ secrets.SLACK_WEBHOOK_URL }}
+          SLACK_BOT_TOKEN: ${{ secrets.SLACK_BOT_TOKEN }}
         uses: voxmedia/github-action-slack-notify-build@v1
         with:
           channel: git
