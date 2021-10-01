@@ -55,7 +55,7 @@ jobs:
           environment_name: Egloodev-env
           version_label: main-${{ steps.current-time.outputs.formattedTime }}
           region: ap-northeast-2
-          deployment_package: ./build/libs/${{env.artifact}}
+          deployment_package: ./back-end-api/build/libs/${{env.artifact}}
           wait_for_environment_recovery: 300
 
       - name: Notify slack success
