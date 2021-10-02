@@ -60,8 +60,6 @@ public class Member {
     @ColumnDescription("유저 Role")
     private MemberRole role;
 
-    public Member(String subject, String s, Collection<? extends GrantedAuthority> authorities) {
-    }
 
     @Builder
     public Member(String userId, String name, String password, Social social, String phoneNo, Gender gender, String email, String address, MemberRole role) {

@@ -18,6 +18,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -28,7 +29,7 @@ import javax.validation.Valid;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping(value = "/auth", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/api/v1/auth", produces = {MediaType.APPLICATION_JSON_VALUE}, consumes = {MediaType.APPLICATION_JSON_VALUE})
 public class AuthController {
     private final TokenProvider tokenProvider;
     private final AuthenticationManagerBuilder authenticationManagerBuilder;
@@ -53,8 +54,10 @@ public class AuthController {
 
     @PostMapping("/user")
     @PreAuthorize("isAuthenticated()")
-    public ResponseEntity<UserProfileResponse> memberInfo(@AuthMember Member member) {
+    public ResponseEntity<UserProfileResponse> memberInfo(@AuthenticationPrincipal Member member) {
         UserProfileResponse userProfile = memberService.memberInfo(member.getEmail());
         return ResponseEntity.ok(userProfile);
     }
+
+
 }

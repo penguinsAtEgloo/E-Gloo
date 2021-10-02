@@ -2,18 +2,21 @@ package com.project.egloo.config.security;
 
 import com.project.egloo.member.domain.Member;
 import lombok.Data;
+import lombok.Getter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.Collection;
 import java.util.Collections;
+import java.util.List;
 
-@Data
-public class UserPrincipal implements UserDetails {
+@Getter
+public class UserPrincipal extends User {
     private Member member;
 
-    private UserPrincipal(Member member) {
+    public UserPrincipal(Member member) {
+        super(member.getEmail(), member.getPassword(), List.of(new SimpleGrantedAuthority("ROLE_USER")));
         this.member = member;
     }
 
@@ -26,7 +29,7 @@ public class UserPrincipal implements UserDetails {
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
+    public Collection<GrantedAuthority> getAuthorities() {
         return Collections.singletonList(new SimpleGrantedAuthority(member.getRoleName()));
     }
 
