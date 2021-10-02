@@ -1,16 +1,19 @@
 package com.project.egloo.config.jwt;
 
 import com.project.egloo.member.domain.Member;
+import com.project.egloo.member.repository.MemberRepository;
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
 import java.security.Key;
@@ -24,6 +27,9 @@ import java.util.stream.Collectors;
 public class TokenProvider implements InitializingBean {
 
     private static final String AUTHORITIES_KEY = "auth";
+
+    @Autowired
+    private MemberRepository memberRepository;
 
     @Value("${jwt.secret}")
     private String secret;
@@ -68,7 +74,7 @@ public class TokenProvider implements InitializingBean {
                 .map(SimpleGrantedAuthority::new)
                 .collect(Collectors.toList());
 
-        Member principal = new Member(claims.getSubject(), "", authorities);
+        Member principal = memberRepository.findByEmail(claims.getSubject()).orElseThrow(() -> new UsernameNotFoundException("유저를 찾을 수 없습니다. email: " + claims.getSubject()));
 
         return new UsernamePasswordAuthenticationToken(principal, token, authorities);
     }
