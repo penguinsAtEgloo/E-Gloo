@@ -41,12 +41,12 @@ public class MemberService {
     @Transactional
     public MemberDTO memberSignUP(SignUpRequest signUpRequest) {
         Member member = Member.builder()
-                .email(signUpRequest.getEmail())
-                .password(passwordEncoder.encode(signUpRequest.getPassword()))
-                .role(MemberRole.USER)
-                .social(signUpRequest.getSocial())
-                .address(signUpRequest.getAddress())
-                .build();
+            .email(signUpRequest.getEmail())
+            .password(passwordEncoder.encode(signUpRequest.getPassword()))
+            .role(MemberRole.USER)
+            .social(signUpRequest.getSocial())
+            .address(signUpRequest.getAddress())
+            .build();
 
         return MemberMapper.INSTANCE.toDTO(memberRepository.save(member));
     }
