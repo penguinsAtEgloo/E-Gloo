@@ -6,7 +6,7 @@ import com.project.egloo.member.domain.Member;
 import com.project.egloo.member.domain.MemberRole;
 import com.project.egloo.member.dto.request.SignUpRequest;
 import com.project.egloo.member.dto.response.MemberDTO;
-import com.project.egloo.member.dto.response.UserProfileResponse;
+import com.project.egloo.member.dto.response.ProfileDTO;
 import com.project.egloo.member.mapper.MemberMapper;
 import com.project.egloo.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -51,8 +51,10 @@ public class MemberService {
         return MemberMapper.INSTANCE.toDTO(memberRepository.save(member));
     }
 
-    public UserProfileResponse memberInfo(String email) {
-        return memberRepository.findMemberByEmail(email).orElseThrow(() -> new AuthException(ErrorCode.ENTITY_NOT_FOUND));
+    public ProfileDTO memberInfo(String email) {
+        Member member = memberRepository.findByEmail(email).orElseThrow(() -> new AuthException(ErrorCode.ENTITY_NOT_FOUND));
+        MemberDTO memberDTO = MemberMapper.INSTANCE.toDTO(member);
+        return new ProfileDTO(memberDTO);
     }
 
 
