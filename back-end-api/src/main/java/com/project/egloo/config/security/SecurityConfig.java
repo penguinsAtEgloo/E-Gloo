@@ -17,6 +17,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
 @RequiredArgsConstructor
@@ -24,7 +27,7 @@ import org.springframework.web.filter.CorsFilter;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
-    private final CorsFilter corsFilter;
+    //    private final CorsFilter corsFilter;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CustomOAuth2UserService oAuth2UserService;
@@ -49,7 +52,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
             .csrf().disable()
 
-            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
+//            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
             .exceptionHandling()
             .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -85,4 +88,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .and().oauth2Login().userInfoEndpoint().userService(oAuth2UserService);
     }
 
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+
+        configuration.addAllowedOrigin("http://localhost:3000");
+        configuration.addAllowedHeader("*");
+        configuration.addAllowedMethod("*");
+        configuration.setAllowCredentials(true);
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration);
+        return source;
+    }
 }
