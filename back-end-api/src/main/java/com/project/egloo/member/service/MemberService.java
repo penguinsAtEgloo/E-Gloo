@@ -70,4 +70,25 @@ public class MemberService {
         JSONObject jsonObj = (JSONObject) obj;
         return jsonObj.get("sub").toString();
     }
+
+    public Member memberUpdate(Member member) {
+        if(!memberRepository.existsByEmail(member.getEmail())) {
+            throw new AuthException(ErrorCode.ENTITY_NOT_FOUND);
+        }
+        Member members = memberRepository.findByEmail(member.getEmail()).get();
+        members.builder()
+            .userId(member.getUserId())
+            .name(member.getName())
+            .password(passwordEncoder.encode(member.getPassword()))
+            .phoneNo(member.getPhoneNo())
+            .email(member.getEmail())
+            .address(member.getAddress())
+            .build();
+        memberRepository.save(members);
+        return members;
+    }
+
+    public void memberDelete(Member member) {
+        memberRepository.delete(member);
+    }
 }
