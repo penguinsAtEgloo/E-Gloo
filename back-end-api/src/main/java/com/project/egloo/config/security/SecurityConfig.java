@@ -1,10 +1,12 @@
 package com.project.egloo.config.security;
 
+import com.project.egloo.config.HttpCookieOAuth2AuthorizationRequestRepository;
 import com.project.egloo.config.jwt.JwtAccessDeniedHandler;
 import com.project.egloo.config.jwt.JwtAuthenticationEntryPoint;
 import com.project.egloo.config.jwt.JwtSecurityConfig;
 import com.project.egloo.config.jwt.TokenProvider;
 import com.project.egloo.member.service.CustomOAuth2UserService;
+import com.project.egloo.member.service.OAuth2SuccessHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;
@@ -16,26 +18,31 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-import org.springframework.web.filter.CorsFilter;
 
 @RequiredArgsConstructor
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private final TokenProvider tokenProvider;
-    //    private final CorsFilter corsFilter;
+
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAccessDeniedHandler jwtAccessDeniedHandler;
     private final CustomOAuth2UserService oAuth2UserService;
+    private final OAuth2SuccessHandler oAuth2SuccessHandler;
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
     }
+
+    @Bean
+    public HttpCookieOAuth2AuthorizationRequestRepository cookieAuthorizationRequestRepository() {
+        return new HttpCookieOAuth2AuthorizationRequestRepository();
+    }
+
 
     @Override
     public void configure(WebSecurity web) {
@@ -51,8 +58,6 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity
             // token을 사용하는 방식이기 때문에 csrf를 disable합니다.
             .csrf().disable()
-
-//            .addFilterBefore(corsFilter, UsernamePasswordAuthenticationFilter.class)
 
             .exceptionHandling()
             .authenticationEntryPoint(jwtAuthenticationEntryPoint)
@@ -76,6 +81,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
             //user
             .antMatchers("/api/v1/auth/login").permitAll()
+            .antMatchers("/api/v1/auth/social/login").permitAll()
             .antMatchers(HttpMethod.POST, "/api/v1/users/signup").permitAll()
             //recipe
             .antMatchers("/api/v1/recipes").permitAll()
@@ -83,9 +89,18 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
             .anyRequest().authenticated()
             //ingredient
             .and()
-            .apply(new JwtSecurityConfig(tokenProvider))
+            .apply(new JwtSecurityConfig(tokenProvider));
 
-            .and().oauth2Login().userInfoEndpoint().userService(oAuth2UserService);
+        httpSecurity
+            .oauth2Login()
+            .authorizationEndpoint()
+            .baseUri("/oauth2/authorization")
+            .authorizationRequestRepository(cookieAuthorizationRequestRepository())
+            .and()
+            .userInfoEndpoint()
+            .userService(oAuth2UserService)
+            .and()
+            .successHandler(oAuth2SuccessHandler);
     }
 
     @Bean

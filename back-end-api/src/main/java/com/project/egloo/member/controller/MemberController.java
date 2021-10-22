@@ -12,10 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -38,9 +35,21 @@ public class MemberController {
         return ResponseEntity.ok(signUpResponse);
     }
 
-    @PostMapping("/api/v1/users/me")
+    @GetMapping("/api/v1/users/me")
     public ResponseEntity<ProfileDTO> memberInfo(@AuthenticationPrincipal Member member) {
         ProfileDTO userProfile = memberService.memberInfo(member.getEmail());
         return ResponseEntity.ok(userProfile);
+    }
+
+    @PostMapping("/api/v1/users/update")
+    public ResponseEntity<Member> memberUpdate(Member member) {
+        Member members = memberService.memberUpdate(member);
+        return ResponseEntity.ok(members);
+    }
+
+    @DeleteMapping("/api/v1/users/delete")
+    public ResponseEntity<Member> memberDelete(Member member) {
+        memberService.memberDelete(member);
+        return ResponseEntity.ok(member);
     }
 }
