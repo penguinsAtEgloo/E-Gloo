@@ -2,17 +2,17 @@
   <div>
     <v-container style="width: 400px">
       <v-row class="profile_header">
-        <v-col cols="12">{{ userId }}</v-col>
+        <v-col cols="12">{{ user.userId }}</v-col>
       </v-row>
       <v-row class="pa-2" style="height: 100px">
         <v-col cols="3">
           <v-avatar size="74px">
-            <img :src="userImage" width="100%" />
+            <img :src="user.userImage" width="100%" />
           </v-avatar>
         </v-col>
         <v-col cols="6">
           <div style="height: 17px"></div>
-          <p class="profile_userId">{{ userId }}</p>
+          <p class="profile_userId">{{ user.userId }}</p>
           <p class="profile_follow_info">
             팔로워 {{ follower }} 팔로잉 {{ following }}
           </p>
@@ -54,7 +54,7 @@
           <span class="profile_image_cnt">{{ userRecipesCnt }}</span>
         </v-col>
       </v-row>
-      <v-row>
+      <!-- <v-row>
         <v-col
           v-for="n in userRecipesCnt"
           :key="n"
@@ -81,7 +81,7 @@
             </template>
           </v-img>
         </v-col>
-      </v-row>
+      </v-row> -->
     </v-container>
   </div>
 </template>
@@ -90,23 +90,23 @@
 import { mapGetters, mapState } from "vuex";
 
 export default {
-  async asyncData({ route, store }) {
-    const { query } = route;
-    const userIdParam = query.userId ? query.userId : "mh9406";
-    await store.dispatch(
-      "profile/firstDataFetch",
-      { userId: userIdParam },
-      { root: true }
-    );
-  },
+  // async asyncData({ route, store }) {
+  //   const { query } = route;
+  //   const userIdParam = query.userId ? query.userId : "mh9406";
+  //   await store.dispatch(
+  //     "profile/firstDataFetch",
+  //     { userId: userIdParam },
+  //     { root: true }
+  //   );
+  // },
   data() {
     return {};
   },
   props: {
     myFollowingLoading: {
       type: Boolean,
-      default: false,
-    },
+      default: false
+    }
   },
   computed: {
     ...mapGetters(["isAuthenticated", "loggedInUser"]),
@@ -118,17 +118,22 @@ export default {
       "following",
       "myFollowing",
       "myFollowLoading",
-      "userRecipes",
+      "userRecipes"
     ]),
     userRecipesCnt() {
-      return this.$store.state.profile.userRecipes.length;
+      return 1;
+      // return this.$store.state.auth.user.userRecipes.length;
     },
     userIntro() {
-      return this.$store.state.profile.userIntro.replace(
-        /(?:\r\n|\r|\n)/g,
-        "<br />"
-      );
+      // return this.$store.state.auth.user.userIntro.replace(
+      //   /(?:\r\n|\r|\n)/g,
+      //   "<br />"
+      // );
+      return "";
     },
+    user() {
+      return this.$store.state.auth.user;
+    }
   },
   methods: {
     async updateMyFollowing(toFollow) {
@@ -139,8 +144,8 @@ export default {
         { root: true }
       );
       this.myFollowingLoading = false;
-    },
-  },
+    }
+  }
 };
 </script>
 

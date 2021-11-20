@@ -8,12 +8,12 @@
         </div>
         <ValidationObserver ref="observer">
           <form method="post" @submit.prevent="register">
-            <general-input
-              rules="required"
-              name="닉네임"
-              placeholder="닉네임을 입력해주세요."
-              v-model="registerData.username"
-            />
+            <ValidationProvider rules="required">
+              <v-text-field
+                placeholder="닉네임"
+                v-model="registerData.username"
+              />
+            </ValidationProvider>
             <general-input
               rules="required|min:8,12|max:12|complex"
               name="비밀번호"
@@ -75,7 +75,6 @@
 <script>
 import Notification from "~/components/Notification";
 import { ValidationObserver } from "vee-validate";
-import GeneralInput from "~/components/GeneralInput";
 import SwitchTabInput from "~/components/SwitchTabInput";
 import MultiplyIcon from "~/assets/images/multiply.svg?inline";
 import daumMaps from "@/services/daumMaps";
@@ -84,7 +83,6 @@ export default {
   components: {
     Notification,
     ValidationObserver,
-    GeneralInput,
     SwitchTabInput,
     MultiplyIcon
   },

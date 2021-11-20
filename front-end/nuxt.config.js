@@ -13,7 +13,9 @@ export default {
     ],
     link: []
   },
-
+  router: {
+    middleware: ["auth"]
+  },
   // Global CSS: https://go.nuxtjs.dev/config-css
   css: ["@/assets/css/common.css", "@/assets/css/transition.css"],
 
@@ -34,57 +36,131 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     "@nuxtjs/axios",
-    "@nuxtjs/auth",
-    "@nuxtjs/svg"
+    "@nuxtjs/svg",
+    "@nuxtjs/auth-next"
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
     transpile: ["vee-validate/dist/rules"]
   },
-
   axios: {
     proxy: true
   },
-  proxy: {
-    "/api": {
-      target: "http://localhost:8080",
-      pathRewrite: { "^/api": "" }
-    },
-    changeOrigin: true
-  },
-
+  proxy: [
+    [
+      "/api",
+      {
+        target: "http://localhost:8080",
+        pathRewrite: { "^/api": "" },
+        changeOrigin: true,
+        secure: process.env.NODE_ENV === "production",
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    ]
+  ],
   auth: {
+    redirect: {
+      login: "/login",
+      logout: "/",
+      callback: "/callback",
+      home: "/"
+    },
+    rewriteRedirects: true,
     strategies: {
       local: {
-        scheme: "refresh",
         token: {
-          property: "access_token",
-          maxAge: 1800,
-          global: true
-          // type: "Bearer"
-        },
-        refreshToken: {
-          property: "refresh_token",
-          data: "refresh_token",
-          maxAge: 60 * 60 * 24 * 30
-        },
-        user: {
-          property: "user",
-          autoFetch: true
+          property: "token",
+          global: true,
+          type: "Bearer"
         },
         endpoints: {
           login: {
-            url: "/api/auth/login",
+            url: "/api/api/v1/auth/login",
             method: "post",
-            headers: {
-              "Content-Type": "application/json"
-            },
             propertyName: "token"
           },
-          user: { url: "/api/auth/user", method: "post", propertyName: "user" },
-          logout: false
+          logout: false,
+          user: {
+            url: "/api/api/v1/users/me",
+            method: "get",
+            autoFetch: true
+          }
+        },
+        user: {
+          property: "user"
         }
+      },
+      kakao: {
+        scheme: "oauth2",
+        endpoints: {
+          authorization: "/api/oauth2/authorization/kakao",
+          token: undefined,
+          logout: false,
+          userInfo: "/api/api/v1/users/me"
+        },
+        user: {
+          property: "user"
+        },
+        refresh_token: false,
+        token: {
+          property: "token",
+          type: "Bearer",
+          maxAge: 1800
+        },
+        scope: ["profile_nickname", "profile_image", "account_email"],
+        state: "UNIQUE_AND_NON_GUESSABLE",
+        codeChallengeMethod: "S256",
+        responseType: "token",
+        grantType: "implicit"
+      },
+      naver: {
+        scheme: "oauth2",
+        endpoints: {
+          authorization: "/api/oauth2/authorization/naver",
+          token: undefined,
+          logout: false,
+          userInfo: "/api/api/v1/users/me"
+        },
+        user: {
+          property: "user"
+        },
+        refresh_token: false,
+        token: {
+          property: "token",
+          type: "Bearer",
+          maxAge: 1800
+        },
+        scope: ["profile_nickname", "profile_image", "account_email"],
+        state: "UNIQUE_AND_NON_GUESSABLE",
+        codeChallengeMethod: "S256",
+        responseType: "token",
+        grantType: "implicit"
+      },
+      google: {
+        scheme: "oauth2",
+        endpoints: {
+          authorization: "/api/oauth2/authorization/google",
+          token: undefined,
+          logout: false,
+          userInfo: "/api/api/v1/users/me"
+        },
+        user: {
+          property: "user"
+        },
+        refresh_token: false,
+        token: {
+          property: "token",
+          type: "Bearer",
+          maxAge: 1800
+        },
+        scope: ["profile_nickname", "profile_image", "account_email"],
+        state: "UNIQUE_AND_NON_GUESSABLE",
+        codeChallengeMethod: "S256",
+        responseType: "token",
+        grantType: "implicit"
       }
     }
   }
