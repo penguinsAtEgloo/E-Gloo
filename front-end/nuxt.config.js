@@ -36,13 +36,13 @@ export default {
   modules: [
     // https://go.nuxtjs.dev/bootstrap
     "@nuxtjs/axios",
-    "@nuxtjs/auth-next",
-    "@nuxtjs/svg"
+    "@nuxtjs/svg",
+    "@nuxtjs/auth-next"
   ],
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    transpile: ["vee-validate/dist/rules", "@nuxtjs/auth"]
+    transpile: ["vee-validate/dist/rules"]
   },
   axios: {
     proxy: true
@@ -65,8 +65,8 @@ export default {
     redirect: {
       login: "/login",
       logout: "/",
-      callback: "/login",
-      home: false
+      callback: "/callback",
+      home: "/"
     },
     rewriteRedirects: true,
     strategies: {
@@ -82,10 +82,11 @@ export default {
             method: "post",
             propertyName: "token"
           },
-          logout: true,
+          logout: false,
           user: {
             url: "/api/api/v1/users/me",
-            method: "post"
+            method: "get",
+            autoFetch: true
           }
         },
         user: {
@@ -96,27 +97,70 @@ export default {
         scheme: "oauth2",
         endpoints: {
           authorization: "/api/oauth2/authorization/kakao",
-          token: "/api/api/v1/auth/login",
-          userInfo: "/api/api/v1/users/me",
-          logout: false
+          token: undefined,
+          logout: false,
+          userInfo: "/api/api/v1/users/me"
         },
+        user: {
+          property: "user"
+        },
+        refresh_token: false,
         token: {
           property: "token",
           type: "Bearer",
           maxAge: 1800
         },
-        responseType: "token",
-        grantType: "authorization_code",
-        accessType: undefined,
-        redirectUri: undefined,
-        logoutRedirectUri: undefined,
-        clientId: "SET_ME",
-        scope: ["openid", "profile", "email"],
+        scope: ["profile_nickname", "profile_image", "account_email"],
         state: "UNIQUE_AND_NON_GUESSABLE",
-        codeChallengeMethod: "",
-        responseMode: "",
-        acrValues: ""
-        // autoLogout: false
+        codeChallengeMethod: "S256",
+        responseType: "token",
+        grantType: "implicit"
+      },
+      naver: {
+        scheme: "oauth2",
+        endpoints: {
+          authorization: "/api/oauth2/authorization/naver",
+          token: undefined,
+          logout: false,
+          userInfo: "/api/api/v1/users/me"
+        },
+        user: {
+          property: "user"
+        },
+        refresh_token: false,
+        token: {
+          property: "token",
+          type: "Bearer",
+          maxAge: 1800
+        },
+        scope: ["profile_nickname", "profile_image", "account_email"],
+        state: "UNIQUE_AND_NON_GUESSABLE",
+        codeChallengeMethod: "S256",
+        responseType: "token",
+        grantType: "implicit"
+      },
+      google: {
+        scheme: "oauth2",
+        endpoints: {
+          authorization: "/api/oauth2/authorization/google",
+          token: undefined,
+          logout: false,
+          userInfo: "/api/api/v1/users/me"
+        },
+        user: {
+          property: "user"
+        },
+        refresh_token: false,
+        token: {
+          property: "token",
+          type: "Bearer",
+          maxAge: 1800
+        },
+        scope: ["profile_nickname", "profile_image", "account_email"],
+        state: "UNIQUE_AND_NON_GUESSABLE",
+        codeChallengeMethod: "S256",
+        responseType: "token",
+        grantType: "implicit"
       }
     }
   }

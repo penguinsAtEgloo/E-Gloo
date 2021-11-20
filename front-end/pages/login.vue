@@ -52,10 +52,10 @@
           <span class="vl"></span>
           <span class="text">네이버로 로그인&emsp;&emsp;</span>
         </div>
-        <div class="social" @click="clickedSocial = '페이스북'">
+        <div class="social" @click="clickedSocial = '구글'">
           <facebook />
           <span class="vl"></span>
-          <span class="text">페이스북으로 로그인</span>
+          <span class="text">구글로 로그인</span>
         </div>
       </div>
       <div class="bottom-section">
@@ -74,7 +74,10 @@
         이글루에서 {{ socialMessage }}<br />열려고 합니다.
       </template>
       <template slot="footer">
-        <button class="open-social-button" @click="social_login(clickedSocial)">
+        <button
+          class="open-social-button"
+          @click="$auth.loginWith(map[clickedSocial])"
+        >
           열기
         </button>
         <button class="close-button" @click="clickedSocial = ''">
@@ -93,11 +96,10 @@ import Modal from "@/components/Modal.vue";
 import Logo from "~/assets/images/logo.svg?inline";
 import Kakaotalk from "~/assets/images/kakaotalk.svg?inline";
 import Naver from "~/assets/images/naver.svg?inline";
-import Facebook from "~/assets/images/facebook.svg?inline";
+import Google from "~/assets/images/facebook.svg?inline";
 import batchimEnding from "@/plugins/batchimEnding";
 
 export default {
-  auth: "guest",
   // beforeRouteEnter(from, to, next) {
   //   // attempt to store the route full path (including parameters) so that we may redirect to it after a successful login.
   //   next(vm => vm.setRedirectUrl(to));
@@ -111,7 +113,7 @@ export default {
     Logo,
     Kakaotalk,
     Naver,
-    Facebook
+    Google
   },
   data() {
     return {
@@ -122,7 +124,12 @@ export default {
       error: null,
       showRegisterModal: false,
       clickedSocial: "",
-      redirectUrl: null
+      redirectUrl: null,
+      map: {
+        네이버: "naver",
+        카카오톡: "kakao",
+        구글: "google"
+      }
     };
   },
   computed: {
@@ -147,28 +154,18 @@ export default {
             data: this.loginData
           })
           .then(() => {
-            // if (this.redirectUrl) {
-            //   this.$router.push(this.redirectUrl);
-            // } else {
-            //   this.$router.push("/");
-            // }
+            if (this.redirectUrl) {
+              this.$router.push(this.redirectUrl);
+            } else {
+              this.$router.push("/");
+            }
           })
           .catch(e => (this.error = e.message));
       }
     },
     async social_login(socialType) {
       this.clickedSocial = "";
-      const res = await this.$auth
-        .loginWith("kakao", {})
-        .catch(e => (this.error = e.message));
-      await this.$auth.setUserToken(response.data.token);
-
-      if (this.redirectUrl) {
-        this.$router.push(this.redirectUrl);
-        // if a redirect URL is not set then redirect to the home page.
-      } else {
-        this.$router.push("/");
-      }
+      this.$auth.loginWith(socialType);
     }
   }
 };
